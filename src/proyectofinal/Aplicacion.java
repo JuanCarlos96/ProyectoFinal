@@ -10,17 +10,16 @@ package proyectofinal;
  * @author juancarlos
  */
 public class Aplicacion extends javax.swing.JFrame {
-    private Conector con;
+    //private Conector con;
 
     /**
      * Creates new form Aplicacion
      */
     public Aplicacion() {
-        this.setLocationRelativeTo(null);
+        //con = new Conector();
+        //con.reiniciarBD();
+        //con.cerrar();
         initComponents();
-        con = new Conector("noticias.db");
-        con.conectar();
-        con.cerrar();
     }
 
     /**
@@ -32,11 +31,119 @@ public class Aplicacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainAdmin = new javax.swing.JFrame();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnUsuariosAdmin = new javax.swing.JButton();
+        btnNoticiasAdmin = new javax.swing.JButton();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        panelUsuarios = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaUsuarios = new javax.swing.JTable();
+        adminMenuBar = new javax.swing.JMenuBar();
+        archivoMenu = new javax.swing.JMenu();
+        salirMenuItem = new javax.swing.JMenuItem();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
+
+        mainAdmin.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        mainAdmin.setPreferredSize(new java.awt.Dimension(682, 464));
+        mainAdmin.setResizable(false);
+        mainAdmin.setSize(new java.awt.Dimension(682, 464));
+
+        jToolBar1.setFloatable(false);
+        jToolBar1.setEnabled(false);
+
+        btnUsuariosAdmin.setText("Usuarios");
+        btnUsuariosAdmin.setFocusable(false);
+        btnUsuariosAdmin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnUsuariosAdmin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnUsuariosAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuariosAdminActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnUsuariosAdmin);
+
+        btnNoticiasAdmin.setText("Noticias");
+        btnNoticiasAdmin.setFocusable(false);
+        btnNoticiasAdmin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNoticiasAdmin.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNoticiasAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNoticiasAdminActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnNoticiasAdmin);
+
+        tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaUsuarios);
+
+        javax.swing.GroupLayout panelUsuariosLayout = new javax.swing.GroupLayout(panelUsuarios);
+        panelUsuarios.setLayout(panelUsuariosLayout);
+        panelUsuariosLayout.setHorizontalGroup(
+            panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+        );
+        panelUsuariosLayout.setVerticalGroup(
+            panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+        );
+
+        jLayeredPane1.setLayer(panelUsuarios, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
+        jLayeredPane1.setLayout(jLayeredPane1Layout);
+        jLayeredPane1Layout.setHorizontalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jLayeredPane1Layout.setVerticalGroup(
+            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        archivoMenu.setText("Archivo");
+
+        salirMenuItem.setText("Salir");
+        archivoMenu.add(salirMenuItem);
+
+        adminMenuBar.add(archivoMenu);
+
+        mainAdmin.setJMenuBar(adminMenuBar);
+
+        javax.swing.GroupLayout mainAdminLayout = new javax.swing.GroupLayout(mainAdmin.getContentPane());
+        mainAdmin.getContentPane().setLayout(mainAdminLayout);
+        mainAdminLayout.setHorizontalGroup(
+            mainAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1)
+        );
+        mainAdminLayout.setVerticalGroup(
+            mainAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainAdminLayout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLayeredPane1))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("INICIAR SESIÓN");
@@ -48,6 +155,11 @@ public class Aplicacion extends javax.swing.JFrame {
         jLabel2.setText("CONTRASEÑA");
 
         btnLogin.setText("ENTRAR");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,6 +198,20 @@ public class Aplicacion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        mainAdmin.setLocationRelativeTo(null);
+        mainAdmin.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnUsuariosAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosAdminActionPerformed
+        panelUsuarios.setVisible(true);
+    }//GEN-LAST:event_btnUsuariosAdminActionPerformed
+
+    private void btnNoticiasAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoticiasAdminActionPerformed
+        panelUsuarios.setVisible(false);
+    }//GEN-LAST:event_btnNoticiasAdminActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -116,15 +242,28 @@ public class Aplicacion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Aplicacion().setVisible(true);
+                Aplicacion aplicacion = new Aplicacion();
+                aplicacion.setLocationRelativeTo(null);
+                aplicacion.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar adminMenuBar;
+    private javax.swing.JMenu archivoMenu;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnNoticiasAdmin;
+    private javax.swing.JButton btnUsuariosAdmin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JFrame mainAdmin;
+    private javax.swing.JPanel panelUsuarios;
+    private javax.swing.JMenuItem salirMenuItem;
+    private javax.swing.JTable tablaUsuarios;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
