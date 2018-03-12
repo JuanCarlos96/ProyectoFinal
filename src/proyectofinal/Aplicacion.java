@@ -5,21 +5,36 @@
  */
 package proyectofinal;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author juancarlos
  */
 public class Aplicacion extends javax.swing.JFrame {
-    //private Conector con;
+    private Conector con;
 
     /**
      * Creates new form Aplicacion
      */
     public Aplicacion() {
-        //con = new Conector();
-        //con.reiniciarBD();
-        //con.cerrar();
+        con = new Conector();
+        listarUsuarios();
         initComponents();
+    }
+    
+    private void listarUsuarios() {
+        DefaultTableModel modeloUsuarios = (DefaultTableModel) tablaUsuarios.getModel();//FALLA
+        ArrayList<Departamento> usuarios = con.listaUsuarios();
+        
+        for (int i=0; i<modeloUsuarios.getRowCount()-1; i++) {
+            modeloUsuarios.removeRow(i);
+        }
+        
+        for (Departamento d:usuarios) {
+            modeloUsuarios.addRow(new Object[] {d.getId(), d.getUsuario(), d.getClave()});
+        }
     }
 
     /**
@@ -80,16 +95,37 @@ public class Aplicacion extends javax.swing.JFrame {
 
         tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Usuario", "Contraseña"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaUsuarios);
+        if (tablaUsuarios.getColumnModel().getColumnCount() > 0) {
+            tablaUsuarios.getColumnModel().getColumn(0).setResizable(false);
+            tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tablaUsuarios.getColumnModel().getColumn(1).setResizable(false);
+            tablaUsuarios.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout panelUsuariosLayout = new javax.swing.GroupLayout(panelUsuarios);
         panelUsuarios.setLayout(panelUsuariosLayout);
@@ -124,6 +160,11 @@ public class Aplicacion extends javax.swing.JFrame {
         archivoMenu.setText("Archivo");
 
         salirMenuItem.setText("Salir");
+        salirMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirMenuItemActionPerformed(evt);
+            }
+        });
         archivoMenu.add(salirMenuItem);
 
         adminMenuBar.add(archivoMenu);
@@ -211,6 +252,11 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnNoticiasAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoticiasAdminActionPerformed
         panelUsuarios.setVisible(false);
     }//GEN-LAST:event_btnNoticiasAdminActionPerformed
+
+    private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
+        con.cerrar();
+        System.exit(0);
+    }//GEN-LAST:event_salirMenuItemActionPerformed
 
     /**
      * @param args the command line arguments

@@ -7,8 +7,12 @@ package proyectofinal;
 
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -61,6 +65,24 @@ public class Conector {
             System.out.println("Error en la creación de las tablas");
             System.out.println(e.getMessage());
         }
+    }
+    
+    public ArrayList<Departamento> listaUsuarios() {
+        ArrayList<Departamento> usuarios = new ArrayList();
+        try {
+            sql = "SELECT * FROM Departamento";
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()) {
+                usuarios.add(new Departamento(rs.getInt("IdDpto"), rs.getString("Usuario"), rs.getString("Clave")));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Error obteniendo los usuarios");
+            System.out.println(ex.getMessage());
+        }
+        return usuarios;
     }
     
     public void reiniciarBD() {
