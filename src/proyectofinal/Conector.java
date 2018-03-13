@@ -6,34 +6,35 @@
 package proyectofinal;
 
 import com.mysql.jdbc.Connection;
+import java.io.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author juancarlos
  */
 public class Conector {
-    private Connection conexion;
+    private Connection conexion = null;
     private String sql;
     private Statement stmnt;
-    private final String URL = "jdbc:mysql://localhost/noticias";
     private final String USER = "root";
     private final String PASSWORD = "root";
 
-    public Conector() {
+    public Conector(String ip) {
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            this.conexion = (Connection) DriverManager.getConnection(URL, USER, PASSWORD);
+            this.conexion = (Connection) DriverManager.getConnection("jdbc:mysql://"+ip+"/noticias", USER, PASSWORD);
+            JOptionPane.showMessageDialog(null, "Base de datos conectada");
             System.out.println("Base de datos conectada.");
         } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error conectando con la base de datos");
             System.out.println("Error cargando el driver");
-            System.out.println(ex.getMessage());
+            //ex.printStackTrace();
         }
     }
     
@@ -63,7 +64,7 @@ public class Conector {
             System.out.println("Tablas creadas");
         } catch (SQLException e) {
             System.out.println("Error en la creación de las tablas");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -80,7 +81,7 @@ public class Conector {
             rs.close();
         } catch (SQLException ex) {
             System.out.println("Error obteniendo los usuarios");
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
         return usuarios;
     }
@@ -99,19 +100,35 @@ public class Conector {
             crearTablas();
         } catch (SQLException e) {
             System.out.println("Error al reiniciar la base de datos");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
     
     public void cerrar() {
         if (conexion!=null) {
             try {
+                DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File("administrador.dat")));
+                stmnt = conexion.createStatement();
+                sql = "SELECT * FROM Departamento WHERE IdDpto=1";
+                ResultSet rs = stmnt.executeQuery(sql);
+                while(rs.next()) {
+                    dos.writeUTF(Integer.toString(rs.getInt("IdDpto"))+" "+rs.getString("Usuario")+" "+rs.getString("Clave"));
+                }
+                rs.close();
+                dos.close();
                 conexion.close();
                 System.out.println("Conexión cerrada.");
             } catch (SQLException e) {
                 System.out.println("No se pudo cerrar la conexión.");
-                System.out.println(e.getMessage());
+                e.printStackTrace();
+            } catch (IOException ex) {
+                System.out.println("Error creando el archivo administrador.dat");
+                ex.printStackTrace();
             }
         }
+    }
+
+    public Connection getConexion() {
+        return conexion;
     }
 }

@@ -5,7 +5,9 @@
  */
 package proyectofinal;
 
+import java.io.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,13 +21,34 @@ public class Aplicacion extends javax.swing.JFrame {
      * Creates new form Aplicacion
      */
     public Aplicacion() {
-        con = new Conector();
-        listarUsuarios();
         initComponents();
     }
     
+    private boolean admin() {
+        boolean esAdmin = false;
+        try {
+            DataInputStream dis = new DataInputStream(new FileInputStream("administrador.dat"));
+            String linea;
+            try{
+                while (true) {
+                    linea=dis.readUTF();
+                    //System.out.println(linea);
+                    if (txtUser.getText().trim().equals(linea.split(" ")[1]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[2])) {
+                        esAdmin = true;
+                    }
+                }
+            } catch (EOFException eofe) {
+            }
+            dis.close();
+        } catch (IOException e) {
+            System.out.println("Error leyendo el archivo administrador.dat");
+            e.printStackTrace();
+        }
+        return esAdmin;
+    }
+    
     private void listarUsuarios() {
-        DefaultTableModel modeloUsuarios = (DefaultTableModel) tablaUsuarios.getModel();//FALLA
+        DefaultTableModel modeloUsuarios = (DefaultTableModel) tablaUsuarios.getModel();
         ArrayList<Departamento> usuarios = con.listaUsuarios();
         
         for (int i=0; i<modeloUsuarios.getRowCount()-1; i++) {
@@ -54,9 +77,16 @@ public class Aplicacion extends javax.swing.JFrame {
         panelUsuarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaUsuarios = new javax.swing.JTable();
+        panelNoticias = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaTodasNoticias = new javax.swing.JTable();
         adminMenuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salirMenuItem = new javax.swing.JMenuItem();
+        peticionIP = new javax.swing.JDialog();
+        jLabel3 = new javax.swing.JLabel();
+        txtIP = new javax.swing.JTextField();
+        btnConectarBD = new javax.swing.JButton();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -67,6 +97,11 @@ public class Aplicacion extends javax.swing.JFrame {
         mainAdmin.setPreferredSize(new java.awt.Dimension(682, 464));
         mainAdmin.setResizable(false);
         mainAdmin.setSize(new java.awt.Dimension(682, 464));
+        mainAdmin.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                mainAdminWindowClosing(evt);
+            }
+        });
 
         jToolBar1.setFloatable(false);
         jToolBar1.setEnabled(false);
@@ -95,17 +130,14 @@ public class Aplicacion extends javax.swing.JFrame {
 
         tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Usuario", "Contraseña"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -119,10 +151,11 @@ public class Aplicacion extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaUsuarios.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tablaUsuarios);
         if (tablaUsuarios.getColumnModel().getColumnCount() > 0) {
             tablaUsuarios.getColumnModel().getColumn(0).setResizable(false);
-            tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(5);
             tablaUsuarios.getColumnModel().getColumn(1).setResizable(false);
             tablaUsuarios.getColumnModel().getColumn(2).setResizable(false);
         }
@@ -135,10 +168,56 @@ public class Aplicacion extends javax.swing.JFrame {
         );
         panelUsuariosLayout.setVerticalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+        );
+
+        tablaTodasNoticias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IdDpto", "Departamento", "Fecha", "", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaTodasNoticias.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tablaTodasNoticias);
+        if (tablaTodasNoticias.getColumnModel().getColumnCount() > 0) {
+            tablaTodasNoticias.getColumnModel().getColumn(0).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tablaTodasNoticias.getColumnModel().getColumn(1).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(2).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(3).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout panelNoticiasLayout = new javax.swing.GroupLayout(panelNoticias);
+        panelNoticias.setLayout(panelNoticiasLayout);
+        panelNoticiasLayout.setHorizontalGroup(
+            panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+        );
+        panelNoticiasLayout.setVerticalGroup(
+            panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
         );
 
         jLayeredPane1.setLayer(panelUsuarios, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(panelNoticias, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -148,6 +227,11 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelNoticias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,6 +239,11 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(panelNoticias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         archivoMenu.setText("Archivo");
@@ -186,6 +275,51 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addComponent(jLayeredPane1))
         );
 
+        peticionIP.setSize(new java.awt.Dimension(385, 177));
+
+        jLabel3.setText("Introduzca IP del servidor");
+
+        txtIP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtIPKeyPressed(evt);
+            }
+        });
+
+        btnConectarBD.setText("Conectar");
+        btnConectarBD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConectarBDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout peticionIPLayout = new javax.swing.GroupLayout(peticionIP.getContentPane());
+        peticionIP.getContentPane().setLayout(peticionIPLayout);
+        peticionIPLayout.setHorizontalGroup(
+            peticionIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(peticionIPLayout.createSequentialGroup()
+                .addGroup(peticionIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(peticionIPLayout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addGroup(peticionIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtIP)))
+                    .addGroup(peticionIPLayout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(btnConectarBD)))
+                .addContainerGap(106, Short.MAX_VALUE))
+        );
+        peticionIPLayout.setVerticalGroup(
+            peticionIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(peticionIPLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnConectarBD)
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("INICIAR SESIÓN");
         setResizable(false);
@@ -199,6 +333,12 @@ public class Aplicacion extends javax.swing.JFrame {
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
+            }
+        });
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
             }
         });
 
@@ -240,23 +380,73 @@ public class Aplicacion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        mainAdmin.setLocationRelativeTo(null);
-        mainAdmin.setVisible(true);
-        this.setVisible(false);
+        //System.out.println("Usuario: "+txtUser.getText());
+        //System.out.println("Clave: "+String.valueOf(txtPassword.getPassword()));
+        if (txtUser.getText().trim().equals("") || String.valueOf(txtPassword.getPassword()).trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña en blanco");
+        }else {
+            if (txtUser.getText().equals("admin") && String.valueOf(txtPassword.getPassword()).equals("admin")) {
+                peticionIP.setLocationRelativeTo(null);
+                peticionIP.setVisible(true);
+            }else if (admin()) {
+                peticionIP.setLocationRelativeTo(null);
+                peticionIP.setVisible(true);
+            }else {
+                JOptionPane.showMessageDialog(null, "No eres administrador");
+            }
+        }
+        //JOptionPane.showMessageDialog(null, Integer.toString(adminID()));
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnUsuariosAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosAdminActionPerformed
+        tablaUsuarios.clearSelection();
         panelUsuarios.setVisible(true);
+        panelNoticias.setVisible(false);
     }//GEN-LAST:event_btnUsuariosAdminActionPerformed
 
     private void btnNoticiasAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoticiasAdminActionPerformed
+        tablaTodasNoticias.clearSelection();
         panelUsuarios.setVisible(false);
+        panelNoticias.setVisible(true);
     }//GEN-LAST:event_btnNoticiasAdminActionPerformed
 
     private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
         con.cerrar();
         System.exit(0);
     }//GEN-LAST:event_salirMenuItemActionPerformed
+
+    private void btnConectarBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarBDActionPerformed
+        if (txtIP.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe introducir una IP");
+        }else {
+            String ip = txtIP.getText();
+            con = new Conector(ip);
+            if (con.getConexion()!=null) {
+                listarUsuarios();
+                mainAdmin.setLocationRelativeTo(null);
+                mainAdmin.setVisible(true);
+                peticionIP.setVisible(false);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_btnConectarBDActionPerformed
+
+    private void mainAdminWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_mainAdminWindowClosing
+        con.cerrar();
+    }//GEN-LAST:event_mainAdminWindowClosing
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        //10 = Intro
+        if (evt.getKeyCode()==10) {
+            btnLogin.doClick();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void txtIPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIPKeyPressed
+        if (evt.getKeyCode()==10) {
+            btnConectarBD.doClick();
+        }
+    }//GEN-LAST:event_txtIPKeyPressed
 
     /**
      * @param args the command line arguments
@@ -298,18 +488,25 @@ public class Aplicacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar adminMenuBar;
     private javax.swing.JMenu archivoMenu;
+    private javax.swing.JButton btnConectarBD;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnNoticiasAdmin;
     private javax.swing.JButton btnUsuariosAdmin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JFrame mainAdmin;
+    private javax.swing.JPanel panelNoticias;
     private javax.swing.JPanel panelUsuarios;
+    private javax.swing.JDialog peticionIP;
     private javax.swing.JMenuItem salirMenuItem;
+    private javax.swing.JTable tablaTodasNoticias;
     private javax.swing.JTable tablaUsuarios;
+    private javax.swing.JTextField txtIP;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
