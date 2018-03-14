@@ -6,8 +6,10 @@
 package proyectofinal;
 
 import com.mysql.jdbc.Connection;
+import java.awt.HeadlessException;
 import java.io.*;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,6 +24,7 @@ public class Conector {
     private Connection conexion = null;
     private String sql;
     private Statement stmnt;
+    private PreparedStatement pstmnt;
     private final String USER = "root";
     private final String PASSWORD = "root";
 
@@ -66,6 +69,64 @@ public class Conector {
             System.out.println("Error en la creación de las tablas");
             e.printStackTrace();
         }
+    }
+    
+    public void addDepartamento(Departamento d) {
+        try {
+            sql = "INSERT INTO Departamento VALUES (?, ?, ?)";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setInt(1, d.getId());
+            pstmnt.setString(2, d.getUsuario());
+            pstmnt.setString(3, d.getClave());
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error creando el usuario");
+            e.printStackTrace();
+        }
+    }
+    
+    public void modDepartamento(Departamento d) {
+        try {
+            sql = "UPDATE Departamento SET Usuario=?, Clave=? WHERE IdDpto=?";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setString(1, d.getUsuario());
+            pstmnt.setString(2, d.getClave());
+            pstmnt.setInt(3, d.getId());
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error modificando el usuario");
+            e.printStackTrace();
+        }
+    }
+    
+    public void eliminarDepartamento(int id) {
+        try {
+            sql = "DELETE FROM Departamento WHERE IdDpto=?";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setInt(1, id);
+            pstmnt.executeUpdate();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println("Error eliminando el usuario");
+            e.printStackTrace();
+        }
+    }
+    
+    public int getMaxId() {
+        int maxId = 0;
+        try {
+            sql = "SELECT MAX(IdDpto) FROM Departamento";
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while (rs.next()) {
+                maxId = rs.getInt("MAX(IdDpto)")+1;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Error obteniendo el máximo ID");
+            e.printStackTrace();
+        }
+        return maxId;
     }
     
     public ArrayList<Departamento> listaUsuarios() {

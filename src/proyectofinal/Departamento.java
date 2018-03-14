@@ -18,6 +18,10 @@ public class Departamento {
         this.usuario = usuario;
         this.clave = clave;
     }
+    
+    public Departamento(String usuario, String clave) {
+        
+    }
 
     public int getId() {
         return id;
