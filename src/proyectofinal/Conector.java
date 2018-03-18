@@ -26,7 +26,7 @@ public class Conector {
     private Statement stmnt;
     private PreparedStatement pstmnt;
     private final String USER = "root";
-    private final String PASSWORD = "root";
+    private final String PASSWORD = "pi2018..";
 
     public Conector(String ip) {
         try{
@@ -58,6 +58,10 @@ public class Conector {
                         + "ON DELETE CASCADE ON UPDATE CASCADE,"
                     + "Imagen   LONGBLOB,"
                     + "Fecha    DATE,"// Formato: YYYY-MM-DD
+                    + "Ruta     VARCHAR(80)"// Ruta donde se guardará la foto en el equipo
+                    + "DiasVigencia INTEGER,"
+                    + "Vigente  BOOLEAN,"
+                    + "Publica  BOOLEAN,"// Campo del visto bueno (checkbox)
                     + "PRIMARY KEY(IDNot))";
             stmnt.execute(sql);
             
@@ -168,6 +172,7 @@ public class Conector {
     public void cerrar() {
         if (conexion!=null) {
             try {
+                // Creación del fichero con el usuario administrador
                 DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File("administrador.dat")));
                 stmnt = conexion.createStatement();
                 sql = "SELECT * FROM Departamento WHERE IdDpto=1";
@@ -177,6 +182,18 @@ public class Conector {
                 }
                 rs.close();
                 dos.close();
+                
+                // Creación del fichero con los usuarios normales
+                DataOutputStream dos2 = new DataOutputStream(new FileOutputStream(new File("usuarios.dat")));
+                stmnt = conexion.createStatement();
+                sql = "SELECT * FROM Departamento WHERE IdDpto>1";
+                ResultSet rs2 = stmnt.executeQuery(sql);
+                while(rs2.next()) {
+                    dos2.writeUTF(Integer.toString(rs2.getInt("IdDpto"))+" "+rs2.getString("Usuario")+" "+rs2.getString("Clave"));
+                }
+                rs2.close();
+                dos2.close();
+                
                 conexion.close();
                 System.out.println("Conexión cerrada.");
             } catch (SQLException e) {

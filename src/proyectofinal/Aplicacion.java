@@ -48,6 +48,29 @@ public class Aplicacion extends javax.swing.JFrame {
         return esAdmin;
     }
     
+    private boolean usuario() {
+        boolean esUsuario = false;
+        try {
+            DataInputStream dis = new DataInputStream(new FileInputStream("usuarios.dat"));
+            String linea;
+            try{
+                while (true) {
+                    linea=dis.readUTF();
+                    //System.out.println(linea);
+                    if (txtUser.getText().trim().equals(linea.split(" ")[1]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[2])) {
+                        esUsuario = true;
+                    }
+                }
+            } catch (EOFException eofe) {
+            }
+            dis.close();
+        } catch (IOException e) {
+            System.out.println("Error leyendo el archivo usuarios.dat");
+            e.printStackTrace();
+        }
+        return esUsuario;
+    }
+    
     private int calculatePasswordStrength(String password){
         
         //total score of password
@@ -151,7 +174,6 @@ public class Aplicacion extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
 
         mainAdmin.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        mainAdmin.setPreferredSize(new java.awt.Dimension(682, 464));
         mainAdmin.setResizable(false);
         mainAdmin.setSize(new java.awt.Dimension(682, 464));
         mainAdmin.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -460,11 +482,10 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(nuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(nuevoUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel4)
-                        .addComponent(txtNuevoUsuario)
-                        .addComponent(txtNuevaClave, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(txtNuevoUsuario)
+                    .addComponent(txtNuevaClave)
                     .addComponent(lblFortaleza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(44, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevoUsuarioLayout.createSequentialGroup()
@@ -499,7 +520,7 @@ public class Aplicacion extends javax.swing.JFrame {
         editarUsuario.setTitle("Editar usuario");
         editarUsuario.setModal(true);
         editarUsuario.setResizable(false);
-        editarUsuario.setSize(new java.awt.Dimension(271, 301));
+        editarUsuario.setSize(new java.awt.Dimension(271, 302));
 
         jLabel7.setText("Nuevo usuario");
 
@@ -537,63 +558,73 @@ public class Aplicacion extends javax.swing.JFrame {
             editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editarUsuarioLayout.createSequentialGroup()
                 .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarUsuarioLayout.createSequentialGroup()
+                    .addGroup(editarUsuarioLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAceptarEditarUsuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelarEditarUsuario))
                     .addGroup(editarUsuarioLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7)
-                            .addComponent(txtEditarUsuario)
-                            .addComponent(txtEditarClave)
-                            .addComponent(lblFortaleza2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel7))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(txtEditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel8))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(txtEditarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel9))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(lblFortaleza2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(editarUsuarioLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel11)
-                        .addGap(44, 44, 44)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarUsuarioLayout.createSequentialGroup()
+                        .addGap(0, 22, Short.MAX_VALUE)
+                        .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel11))
+                            .addGroup(editarUsuarioLayout.createSequentialGroup()
+                                .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblClave, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
-            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblClave, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
         );
         editarUsuarioLayout.setVerticalGroup(
             editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editarUsuarioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(12, 12, 12)
+                .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
-                    .addComponent(lblClave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblClave, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(txtEditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(txtEditarClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(lblFortaleza2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelarEditarUsuario)
-                    .addComponent(btnAceptarEditarUsuario))
-                .addContainerGap())
+                    .addComponent(btnAceptarEditarUsuario)
+                    .addComponent(btnCancelarEditarUsuario))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -661,14 +692,18 @@ public class Aplicacion extends javax.swing.JFrame {
         if (txtUser.getText().trim().equals("") || String.valueOf(txtPassword.getPassword()).trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Usuario o contraseña en blanco");
         }else {
-            if (txtUser.getText().equals("admin") && String.valueOf(txtPassword.getPassword()).equals("admin")) {
+            if (!new File("administrador.dat").exists()) {
+                if (txtUser.getText().equals("admin") && String.valueOf(txtPassword.getPassword()).equals("admin")) {
+                    peticionIP.setLocationRelativeTo(null);
+                    peticionIP.setVisible(true);
+                }
+            }else if (new File("administrador.dat").exists() && admin()) {
                 peticionIP.setLocationRelativeTo(null);
                 peticionIP.setVisible(true);
-            }else if (admin()) {
-                peticionIP.setLocationRelativeTo(null);
-                peticionIP.setVisible(true);
+            }else if (new File("usuarios.dat").exists() && usuario()){
+                JOptionPane.showMessageDialog(null, "El usuario existe");
             }else {
-                JOptionPane.showMessageDialog(null, "No eres administrador");
+                JOptionPane.showMessageDialog(null, "El usuario no existe");
             }
         }
         //JOptionPane.showMessageDialog(null, Integer.toString(adminID()));
@@ -796,6 +831,7 @@ public class Aplicacion extends javax.swing.JFrame {
         txtEditarClave.setText("");
         lblFortaleza2.setText("");
         editarUsuario.setLocationRelativeTo(null);
+        editarUsuario.pack();
         editarUsuario.setVisible(true);
     }//GEN-LAST:event_btnModUsuarioActionPerformed
 
@@ -817,7 +853,18 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarEditarUsuarioActionPerformed
 
     private void btnAceptarEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarEditarUsuarioActionPerformed
-        
+        if (txtEditarUsuario.getText().equals("") || txtEditarClave.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Algún campo vacío");
+        }else {
+            int id = (int) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0);
+            String usuario = txtEditarUsuario.getText();
+            String clave = txtEditarClave.getText();
+            Departamento d = new Departamento(id, usuario, clave);
+            con.modDepartamento(d);
+            editarUsuario.setVisible(false);
+            listarUsuarios();
+            JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
+        }
     }//GEN-LAST:event_btnAceptarEditarUsuarioActionPerformed
 
     /**
