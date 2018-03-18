@@ -184,15 +184,24 @@ public class Conector {
                 dos.close();
                 
                 // Creación del fichero con los usuarios normales
-                DataOutputStream dos2 = new DataOutputStream(new FileOutputStream(new File("usuarios.dat")));
                 stmnt = conexion.createStatement();
                 sql = "SELECT * FROM Departamento WHERE IdDpto>1";
                 ResultSet rs2 = stmnt.executeQuery(sql);
-                while(rs2.next()) {
-                    dos2.writeUTF(Integer.toString(rs2.getInt("IdDpto"))+" "+rs2.getString("Usuario")+" "+rs2.getString("Clave"));
+                if (rs2.next()==true) {
+                    rs2.beforeFirst();
+                    DataOutputStream dos2 = new DataOutputStream(new FileOutputStream(new File("usuarios.dat")));
+                    while(rs2.next()) {
+                        dos2.writeUTF(Integer.toString(rs2.getInt("IdDpto"))+" "+rs2.getString("Usuario")+" "+rs2.getString("Clave"));
+                    }
+                    rs2.close();
+                    dos2.close();
+                }else {
+                    File usuarios = new File("usuarios.dat");
+                    if (usuarios.exists()) {
+                        usuarios.delete();
+                    }
+                    System.out.println("No hay usuarios en la BD");
                 }
-                rs2.close();
-                dos2.close();
                 
                 conexion.close();
                 System.out.println("Conexión cerrada.");

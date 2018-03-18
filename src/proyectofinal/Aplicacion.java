@@ -124,7 +124,9 @@ public class Aplicacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainAdmin = new javax.swing.JFrame();
+        mainAplicacion = new javax.swing.JFrame();
+        jLayeredPane2 = new javax.swing.JLayeredPane();
+        panelAdmin = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnUsuariosAdmin = new javax.swing.JButton();
         btnNoticiasAdmin = new javax.swing.JButton();
@@ -138,6 +140,8 @@ public class Aplicacion extends javax.swing.JFrame {
         panelNoticias = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTodasNoticias = new javax.swing.JTable();
+        panelUsuario = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
         adminMenuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salirMenuItem = new javax.swing.JMenuItem();
@@ -173,12 +177,12 @@ public class Aplicacion extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
 
-        mainAdmin.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        mainAdmin.setResizable(false);
-        mainAdmin.setSize(new java.awt.Dimension(682, 464));
-        mainAdmin.addWindowListener(new java.awt.event.WindowAdapter() {
+        mainAplicacion.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        mainAplicacion.setResizable(false);
+        mainAplicacion.setSize(new java.awt.Dimension(682, 464));
+        mainAplicacion.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                mainAdminWindowClosing(evt);
+                mainAplicacionWindowClosing(evt);
             }
         });
 
@@ -284,7 +288,7 @@ public class Aplicacion extends javax.swing.JFrame {
         panelUsuariosLayout.setVerticalGroup(
             panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuariosLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUsuariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminarUsuario)
@@ -334,7 +338,7 @@ public class Aplicacion extends javax.swing.JFrame {
         );
         panelNoticiasLayout.setVerticalGroup(
             panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
         );
 
         jLayeredPane1.setLayer(panelUsuarios, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -367,6 +371,66 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
+        javax.swing.GroupLayout panelAdminLayout = new javax.swing.GroupLayout(panelAdmin);
+        panelAdmin.setLayout(panelAdminLayout);
+        panelAdminLayout.setHorizontalGroup(
+            panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+            .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLayeredPane1))
+        );
+        panelAdminLayout.setVerticalGroup(
+            panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAdminLayout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 409, Short.MAX_VALUE))
+            .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAdminLayout.createSequentialGroup()
+                    .addGap(0, 34, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jLabel12.setText("Este es el panel del usuario");
+
+        javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
+        panelUsuario.setLayout(panelUsuarioLayout);
+        panelUsuarioLayout.setHorizontalGroup(
+            panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUsuarioLayout.createSequentialGroup()
+                .addGap(244, 244, 244)
+                .addComponent(jLabel12)
+                .addContainerGap(251, Short.MAX_VALUE))
+        );
+        panelUsuarioLayout.setVerticalGroup(
+            panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUsuarioLayout.createSequentialGroup()
+                .addGap(196, 196, 196)
+                .addComponent(jLabel12)
+                .addContainerGap(230, Short.MAX_VALUE))
+        );
+
+        jLayeredPane2.setLayer(panelAdmin, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane2.setLayer(panelUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jLayeredPane2Layout = new javax.swing.GroupLayout(jLayeredPane2);
+        jLayeredPane2.setLayout(jLayeredPane2Layout);
+        jLayeredPane2Layout.setHorizontalGroup(
+            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 682, Short.MAX_VALUE)
+            .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jLayeredPane2Layout.setVerticalGroup(
+            jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+            .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jLayeredPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         archivoMenu.setText("Archivo");
 
         salirMenuItem.setText("Salir");
@@ -379,21 +443,17 @@ public class Aplicacion extends javax.swing.JFrame {
 
         adminMenuBar.add(archivoMenu);
 
-        mainAdmin.setJMenuBar(adminMenuBar);
+        mainAplicacion.setJMenuBar(adminMenuBar);
 
-        javax.swing.GroupLayout mainAdminLayout = new javax.swing.GroupLayout(mainAdmin.getContentPane());
-        mainAdmin.getContentPane().setLayout(mainAdminLayout);
-        mainAdminLayout.setHorizontalGroup(
-            mainAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLayeredPane1)
+        javax.swing.GroupLayout mainAplicacionLayout = new javax.swing.GroupLayout(mainAplicacion.getContentPane());
+        mainAplicacion.getContentPane().setLayout(mainAplicacionLayout);
+        mainAplicacionLayout.setHorizontalGroup(
+            mainAplicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLayeredPane2)
         );
-        mainAdminLayout.setVerticalGroup(
-            mainAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainAdminLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jLayeredPane1))
+        mainAplicacionLayout.setVerticalGroup(
+            mainAplicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLayeredPane2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         peticionIP.setModal(true);
@@ -701,12 +761,29 @@ public class Aplicacion extends javax.swing.JFrame {
                 peticionIP.setLocationRelativeTo(null);
                 peticionIP.setVisible(true);
             }else if (new File("usuarios.dat").exists() && usuario()){
-                JOptionPane.showMessageDialog(null, "El usuario existe");
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader("ipservidor.txt"));
+                    String linea;
+                    
+                    while ((linea=br.readLine())!=null) {
+                        con = new Conector(linea);
+                    }
+                    br.close();
+                    
+                    panelAdmin.setVisible(false);
+                    panelUsuario.setVisible(true);
+                    mainAplicacion.setLocationRelativeTo(null);
+                    mainAplicacion.pack();
+                    mainAplicacion.setVisible(true);
+                    this.setVisible(false);
+                } catch (IOException e) {
+                    System.out.println("Error accediendo al fichero ipservidor.txt");
+                    e.printStackTrace();
+                }
             }else {
                 JOptionPane.showMessageDialog(null, "El usuario no existe");
             }
         }
-        //JOptionPane.showMessageDialog(null, Integer.toString(adminID()));
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnUsuariosAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosAdminActionPerformed
@@ -742,17 +819,20 @@ public class Aplicacion extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
                 listarUsuarios();
-                mainAdmin.setLocationRelativeTo(null);
-                mainAdmin.setVisible(true);
+                panelAdmin.setVisible(true);
+                panelUsuario.setVisible(false);
+                mainAplicacion.setLocationRelativeTo(null);
+                mainAplicacion.pack();
+                mainAplicacion.setVisible(true);
                 peticionIP.setVisible(false);
                 this.setVisible(false);
             }
         }
     }//GEN-LAST:event_btnConectarBDActionPerformed
 
-    private void mainAdminWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_mainAdminWindowClosing
+    private void mainAplicacionWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_mainAplicacionWindowClosing
         con.cerrar();
-    }//GEN-LAST:event_mainAdminWindowClosing
+    }//GEN-LAST:event_mainAplicacionWindowClosing
 
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
         //10 = Intro
@@ -922,6 +1002,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -931,6 +1012,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
@@ -938,9 +1020,11 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblFortaleza;
     private javax.swing.JLabel lblFortaleza2;
     private javax.swing.JLabel lblUsuario;
-    private javax.swing.JFrame mainAdmin;
+    private javax.swing.JFrame mainAplicacion;
     private javax.swing.JDialog nuevoUsuario;
+    private javax.swing.JPanel panelAdmin;
     private javax.swing.JPanel panelNoticias;
+    private javax.swing.JPanel panelUsuario;
     private javax.swing.JPanel panelUsuarios;
     private javax.swing.JDialog peticionIP;
     private javax.swing.JMenuItem salirMenuItem;
