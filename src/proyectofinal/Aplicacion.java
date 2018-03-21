@@ -141,7 +141,9 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTodasNoticias = new javax.swing.JTable();
         panelUsuario = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        btnNuevaNoticia = new javax.swing.JButton();
         adminMenuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salirMenuItem = new javax.swing.JMenuItem();
@@ -171,6 +173,29 @@ public class Aplicacion extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         lblClave = new javax.swing.JLabel();
+        nuevaNoticia = new javax.swing.JDialog();
+        jLabel12 = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lblDepartamento = new javax.swing.JLabel();
+        btnImagen = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel15 = new javax.swing.JLabel();
+        txtVigencia = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        topLeft = new javax.swing.JRadioButton();
+        topRight = new javax.swing.JRadioButton();
+        bottomLeft = new javax.swing.JRadioButton();
+        bottomRight = new javax.swing.JRadioButton();
+        middleLeft = new javax.swing.JRadioButton();
+        middleRight = new javax.swing.JRadioButton();
+        bottomCenter = new javax.swing.JRadioButton();
+        topCenter = new javax.swing.JRadioButton();
+        middleCenter = new javax.swing.JRadioButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -383,30 +408,66 @@ public class Aplicacion extends javax.swing.JFrame {
             panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAdminLayout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 409, Short.MAX_VALUE))
+                .addGap(0, 417, Short.MAX_VALUE))
             .addGroup(panelAdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAdminLayout.createSequentialGroup()
-                    .addGap(0, 34, Short.MAX_VALUE)
+                    .addGap(0, 42, Short.MAX_VALUE)
                     .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jLabel12.setText("Este es el panel del usuario");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Fecha", "Días de vigencia", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        btnNuevaNoticia.setText("Nueva");
 
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
         panelUsuarioLayout.setHorizontalGroup(
             panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuarioLayout.createSequentialGroup()
-                .addGap(244, 244, 244)
-                .addComponent(jLabel12)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUsuarioLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNuevaNoticia)))
+                .addContainerGap())
         );
         panelUsuarioLayout.setVerticalGroup(
             panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUsuarioLayout.createSequentialGroup()
-                .addGap(196, 196, 196)
-                .addComponent(jLabel12)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNuevaNoticia)
+                .addContainerGap())
         );
 
         jLayeredPane2.setLayer(panelAdmin, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -685,6 +746,153 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(btnAceptarEditarUsuario)
                     .addComponent(btnCancelarEditarUsuario))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel12.setText("Fecha: ");
+
+        jLabel13.setText("Departamento: ");
+
+        btnImagen.setText("Seleccionar imagen");
+
+        jLabel14.setText("Texto");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane4.setViewportView(jTextArea1);
+
+        jLabel15.setText("Vigencia: ");
+
+        jLabel16.setText("Posición del texto");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        buttonGroup1.add(topLeft);
+
+        buttonGroup1.add(topRight);
+
+        buttonGroup1.add(bottomLeft);
+
+        buttonGroup1.add(bottomRight);
+
+        buttonGroup1.add(middleLeft);
+
+        buttonGroup1.add(middleRight);
+
+        buttonGroup1.add(bottomCenter);
+
+        buttonGroup1.add(topCenter);
+
+        buttonGroup1.add(middleCenter);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bottomLeft)
+                    .addComponent(topLeft)
+                    .addComponent(middleLeft))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(middleCenter)
+                        .addGap(74, 74, 74)
+                        .addComponent(middleRight))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(topCenter)
+                        .addGap(74, 74, 74)
+                        .addComponent(topRight))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(bottomCenter)
+                        .addGap(74, 74, 74)
+                        .addComponent(bottomRight)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(topCenter)
+                    .addComponent(topRight)
+                    .addComponent(topLeft))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(middleCenter)
+                    .addComponent(middleLeft)
+                    .addComponent(middleRight))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bottomLeft, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomRight, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomCenter, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout nuevaNoticiaLayout = new javax.swing.GroupLayout(nuevaNoticia.getContentPane());
+        nuevaNoticia.getContentPane().setLayout(nuevaNoticiaLayout);
+        nuevaNoticiaLayout.setHorizontalGroup(
+            nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImagen)
+                    .addComponent(jLabel14)
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblDepartamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        nuevaNoticiaLayout.setVerticalGroup(
+            nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(lblDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addComponent(btnImagen)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -987,22 +1195,32 @@ public class Aplicacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar adminMenuBar;
     private javax.swing.JMenu archivoMenu;
+    private javax.swing.JRadioButton bottomCenter;
+    private javax.swing.JRadioButton bottomLeft;
+    private javax.swing.JRadioButton bottomRight;
     private javax.swing.JButton btnAceptarEditarUsuario;
     private javax.swing.JButton btnAceptarNuevoUsuario;
     private javax.swing.JButton btnCancelarEditarUsuario;
     private javax.swing.JButton btnCancelarNuevoUsuario;
     private javax.swing.JButton btnConectarBD;
     private javax.swing.JButton btnEliminarUsuario;
+    private javax.swing.JButton btnImagen;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnModUsuario;
     private javax.swing.JButton btnNoticiasAdmin;
+    private javax.swing.JButton btnNuevaNoticia;
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JButton btnUsuariosAdmin;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JDialog editarUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1013,14 +1231,25 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblClave;
+    private javax.swing.JLabel lblDepartamento;
+    private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblFortaleza;
     private javax.swing.JLabel lblFortaleza2;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JFrame mainAplicacion;
+    private javax.swing.JRadioButton middleCenter;
+    private javax.swing.JRadioButton middleLeft;
+    private javax.swing.JRadioButton middleRight;
+    private javax.swing.JDialog nuevaNoticia;
     private javax.swing.JDialog nuevoUsuario;
     private javax.swing.JPanel panelAdmin;
     private javax.swing.JPanel panelNoticias;
@@ -1030,6 +1259,9 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JMenuItem salirMenuItem;
     private javax.swing.JTable tablaTodasNoticias;
     private javax.swing.JTable tablaUsuarios;
+    private javax.swing.JRadioButton topCenter;
+    private javax.swing.JRadioButton topLeft;
+    private javax.swing.JRadioButton topRight;
     private javax.swing.JTextField txtEditarClave;
     private javax.swing.JTextField txtEditarUsuario;
     private javax.swing.JTextField txtIP;
@@ -1037,5 +1269,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTextField txtNuevoUsuario;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
+    private javax.swing.JTextField txtVigencia;
     // End of variables declaration//GEN-END:variables
 }
