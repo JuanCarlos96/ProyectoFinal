@@ -46,15 +46,14 @@ public class Conector {
             stmnt = conexion.createStatement();
             
             sql = "CREATE TABLE IF NOT EXISTS Departamento ("
-                    + "IdDpto   INTEGER DEFAULT 1,"
-                    + "Usuario  VARCHAR(30),"
+                    + "Departamento  VARCHAR(30),"
                     + "Clave    VARCHAR(30),"
-                    + "PRIMARY KEY(IdDpto))";
+                    + "PRIMARY KEY(Departamento))";
             stmnt.execute(sql);
             
             sql = "CREATE TABLE IF NOT EXISTS Noticia("
                     + "IdNot    INTEGER AUTO_INCREMENT,"
-                    + "IdDpto   INTEGER REFERENCES Departamento(IdDpto)"
+                    + "Departamento   VARCHAR(30) REFERENCES Departamento(Departamento)"
                         + "ON DELETE CASCADE ON UPDATE CASCADE,"
                     + "Imagen   LONGBLOB,"
                     + "Fecha    DATE,"// Formato: YYYY-MM-DD
@@ -65,7 +64,7 @@ public class Conector {
                     + "PRIMARY KEY(IDNot))";
             stmnt.execute(sql);
             
-            sql = "INSERT INTO Departamento (Usuario, Clave) VALUES ('admin', 'admin')";// Creación del usuario Administrador
+            sql = "INSERT INTO Departamento (Departamento, Clave) VALUES ('admin', 'admin')";// Creación del usuario Administrador
             stmnt.execute(sql);
             
             System.out.println("Tablas creadas");
@@ -77,11 +76,10 @@ public class Conector {
     
     public void addDepartamento(Departamento d) {
         try {
-            sql = "INSERT INTO Departamento VALUES (?, ?, ?)";
+            sql = "INSERT INTO Departamento VALUES (?, ?)";
             pstmnt = conexion.prepareStatement(sql);
-            pstmnt.setInt(1, d.getId());
-            pstmnt.setString(2, d.getUsuario());
-            pstmnt.setString(3, d.getClave());
+            pstmnt.setString(1, d.getUsuario());
+            pstmnt.setString(2, d.getClave());
             pstmnt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error creando el usuario");
@@ -91,11 +89,10 @@ public class Conector {
     
     public void modDepartamento(Departamento d) {
         try {
-            sql = "UPDATE Departamento SET Usuario=?, Clave=? WHERE IdDpto=?";
+            sql = "UPDATE Departamento SET Clave=? WHERE Departamento=?";
             pstmnt = conexion.prepareStatement(sql);
-            pstmnt.setString(1, d.getUsuario());
-            pstmnt.setString(2, d.getClave());
-            pstmnt.setInt(3, d.getId());
+            pstmnt.setString(1, d.getClave());
+            pstmnt.setString(2, d.getUsuario());
             pstmnt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error modificando el usuario");
@@ -103,34 +100,16 @@ public class Conector {
         }
     }
     
-    public void eliminarDepartamento(int id) {
+    public void eliminarDepartamento(String departamento) {
         try {
-            sql = "DELETE FROM Departamento WHERE IdDpto=?";
+            sql = "DELETE FROM Departamento WHERE Departamento=?";
             pstmnt = conexion.prepareStatement(sql);
-            pstmnt.setInt(1, id);
+            pstmnt.setString(1, departamento);
             pstmnt.executeUpdate();
         } catch (HeadlessException | SQLException e) {
             System.out.println("Error eliminando el usuario");
             e.printStackTrace();
         }
-    }
-    
-    public int getMaxId() {
-        int maxId = 0;
-        try {
-            sql = "SELECT MAX(IdDpto) FROM Departamento";
-            stmnt = conexion.createStatement();
-            ResultSet rs = stmnt.executeQuery(sql);
-            
-            while (rs.next()) {
-                maxId = rs.getInt("MAX(IdDpto)")+1;
-            }
-            rs.close();
-        } catch (SQLException e) {
-            System.out.println("Error obteniendo el máximo ID");
-            e.printStackTrace();
-        }
-        return maxId;
     }
     
     public ArrayList<Departamento> listaUsuarios() {
@@ -141,7 +120,7 @@ public class Conector {
             ResultSet rs = stmnt.executeQuery(sql);
             
             while(rs.next()) {
-                usuarios.add(new Departamento(rs.getInt("IdDpto"), rs.getString("Usuario"), rs.getString("Clave")));
+                usuarios.add(new Departamento(rs.getString("Departamento"), rs.getString("Clave")));
             }
             rs.close();
         } catch (SQLException ex) {
@@ -175,23 +154,23 @@ public class Conector {
                 // Creación del fichero con el usuario administrador
                 DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File("administrador.dat")));
                 stmnt = conexion.createStatement();
-                sql = "SELECT * FROM Departamento WHERE IdDpto=1";
+                sql = "SELECT * FROM Departamento WHERE Departamento='admin'";
                 ResultSet rs = stmnt.executeQuery(sql);
                 while(rs.next()) {
-                    dos.writeUTF(Integer.toString(rs.getInt("IdDpto"))+" "+rs.getString("Usuario")+" "+rs.getString("Clave"));
+                    dos.writeUTF(rs.getString("Departamento")+" "+rs.getString("Clave"));
                 }
                 rs.close();
                 dos.close();
                 
                 // Creación del fichero con los usuarios normales
                 stmnt = conexion.createStatement();
-                sql = "SELECT * FROM Departamento WHERE IdDpto>1";
+                sql = "SELECT * FROM Departamento WHERE Departamento!='admin'";
                 ResultSet rs2 = stmnt.executeQuery(sql);
                 if (rs2.next()==true) {
                     rs2.beforeFirst();
                     DataOutputStream dos2 = new DataOutputStream(new FileOutputStream(new File("usuarios.dat")));
                     while(rs2.next()) {
-                        dos2.writeUTF(Integer.toString(rs2.getInt("IdDpto"))+" "+rs2.getString("Usuario")+" "+rs2.getString("Clave"));
+                        dos2.writeUTF(rs2.getString("Departamento")+" "+rs2.getString("Clave"));
                     }
                     rs2.close();
                     dos2.close();

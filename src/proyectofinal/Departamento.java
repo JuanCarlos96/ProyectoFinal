@@ -10,21 +10,11 @@ package proyectofinal;
  * @author administrador
  */
 public class Departamento {
-    private int id;
     private String usuario, clave;
 
-    public Departamento(int id, String usuario, String clave) {
-        this.id = id;
+    public Departamento(String usuario, String clave) {
         this.usuario = usuario;
         this.clave = clave;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsuario() {

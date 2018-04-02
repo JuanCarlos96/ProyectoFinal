@@ -34,7 +34,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 while (true) {
                     linea=dis.readUTF();
                     //System.out.println(linea);
-                    if (txtUser.getText().trim().equals(linea.split(" ")[1]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[2])) {
+                    if (txtUser.getText().trim().equals(linea.split(" ")[0]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[1])) {
                         esAdmin = true;
                     }
                 }
@@ -57,7 +57,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 while (true) {
                     linea=dis.readUTF();
                     //System.out.println(linea);
-                    if (txtUser.getText().trim().equals(linea.split(" ")[1]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[2])) {
+                    if (txtUser.getText().trim().equals(linea.split(" ")[0]) && String.valueOf(txtPassword.getPassword()).equals(linea.split(" ")[1])) {
                         esUsuario = true;
                     }
                 }
@@ -111,7 +111,7 @@ public class Aplicacion extends javax.swing.JFrame {
         }
         
         for (Departamento d:usuarios) {
-            modeloUsuarios.addRow(new Object[] {d.getId(), d.getUsuario(), d.getClave()});
+            modeloUsuarios.addRow(new Object[] {d.getUsuario(), d.getClave()});
         }
     }
 
@@ -195,7 +195,11 @@ public class Aplicacion extends javax.swing.JFrame {
         bottomCenter = new javax.swing.JRadioButton();
         topCenter = new javax.swing.JRadioButton();
         middleCenter = new javax.swing.JRadioButton();
+        btnVistaPrevia = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        vistaPrevia = new javax.swing.JDialog();
+        panelVistaPrevia = new javax.swing.JPanel();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -241,14 +245,14 @@ public class Aplicacion extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Usuario", "Contraseña"
+                "Usuario", "Contraseña"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -269,9 +273,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tablaUsuarios);
         if (tablaUsuarios.getColumnModel().getColumnCount() > 0) {
             tablaUsuarios.getColumnModel().getColumn(0).setResizable(false);
-            tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(5);
             tablaUsuarios.getColumnModel().getColumn(1).setResizable(false);
-            tablaUsuarios.getColumnModel().getColumn(2).setResizable(false);
         }
 
         btnEliminarUsuario.setText("Eliminar");
@@ -326,14 +328,14 @@ public class Aplicacion extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdDpto", "Departamento", "Fecha", "", ""
+                "Departamento", "Fecha", "", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -348,11 +350,9 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tablaTodasNoticias);
         if (tablaTodasNoticias.getColumnModel().getColumnCount() > 0) {
             tablaTodasNoticias.getColumnModel().getColumn(0).setResizable(false);
-            tablaTodasNoticias.getColumnModel().getColumn(0).setPreferredWidth(5);
             tablaTodasNoticias.getColumnModel().getColumn(1).setResizable(false);
             tablaTodasNoticias.getColumnModel().getColumn(2).setResizable(false);
             tablaTodasNoticias.getColumnModel().getColumn(3).setResizable(false);
-            tablaTodasNoticias.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout panelNoticiasLayout = new javax.swing.GroupLayout(panelNoticias);
@@ -748,6 +748,9 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        nuevaNoticia.setModal(true);
+        nuevaNoticia.setResizable(false);
+
         jLabel12.setText("Fecha: ");
 
         jLabel13.setText("Departamento: ");
@@ -794,19 +797,19 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(bottomLeft)
                     .addComponent(topLeft)
                     .addComponent(middleLeft))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(middleCenter)
-                        .addGap(74, 74, 74)
+                        .addGap(76, 76, 76)
                         .addComponent(middleRight))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(topCenter)
-                        .addGap(74, 74, 74)
+                        .addGap(76, 76, 76)
                         .addComponent(topRight))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(bottomCenter)
-                        .addGap(74, 74, 74)
+                        .addGap(76, 76, 76)
                         .addComponent(bottomRight)))
                 .addContainerGap())
         );
@@ -831,6 +834,10 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnVistaPrevia.setText("Vista previa");
+
+        jLabel17.setText("días");
+
         javax.swing.GroupLayout nuevaNoticiaLayout = new javax.swing.GroupLayout(nuevaNoticia.getContentPane());
         nuevaNoticia.getContentPane().setLayout(nuevaNoticiaLayout);
         nuevaNoticiaLayout.setHorizontalGroup(
@@ -848,7 +855,9 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addGroup(nuevaNoticiaLayout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel17)))
                 .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(nuevaNoticiaLayout.createSequentialGroup()
                         .addGap(13, 13, 13)
@@ -862,7 +871,11 @@ public class Aplicacion extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(nuevaNoticiaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                                .addComponent(btnVistaPrevia)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         nuevaNoticiaLayout.setVerticalGroup(
@@ -891,8 +904,41 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVistaPrevia)
+                    .addComponent(jLabel17))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        vistaPrevia.setModal(true);
+        vistaPrevia.setResizable(false);
+
+        javax.swing.GroupLayout panelVistaPreviaLayout = new javax.swing.GroupLayout(panelVistaPrevia);
+        panelVistaPrevia.setLayout(panelVistaPreviaLayout);
+        panelVistaPreviaLayout.setHorizontalGroup(
+            panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 376, Short.MAX_VALUE)
+        );
+        panelVistaPreviaLayout.setVerticalGroup(
+            panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 276, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout vistaPreviaLayout = new javax.swing.GroupLayout(vistaPrevia.getContentPane());
+        vistaPrevia.getContentPane().setLayout(vistaPreviaLayout);
+        vistaPreviaLayout.setHorizontalGroup(
+            vistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaPreviaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        vistaPreviaLayout.setVerticalGroup(
+            vistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaPreviaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1083,7 +1129,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void btnAceptarNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarNuevoUsuarioActionPerformed
         if (!txtNuevoUsuario.getText().equals("") && !txtNuevaClave.getText().equals("")) {
-            Departamento d = new Departamento(con.getMaxId(), txtNuevoUsuario.getText(), txtNuevaClave.getText());
+            Departamento d = new Departamento(txtNuevoUsuario.getText(), txtNuevaClave.getText());
             con.addDepartamento(d);
             nuevoUsuario.setVisible(false);
             listarUsuarios();
@@ -1096,8 +1142,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
         // 0-Sí 1-No
         if (JOptionPane.showConfirmDialog(null, "¿Desea eliminar el usuario?", "Eliminar usuario", JOptionPane.YES_NO_OPTION)==0) {
-            int id = (int) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0);
-            con.eliminarDepartamento(id);
+            String departamento = (String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0);
+            con.eliminarDepartamento(departamento);
             listarUsuarios();
             JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
             btnModUsuario.setEnabled(false);
@@ -1144,10 +1190,9 @@ public class Aplicacion extends javax.swing.JFrame {
         if (txtEditarUsuario.getText().equals("") || txtEditarClave.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Algún campo vacío");
         }else {
-            int id = (int) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0);
             String usuario = txtEditarUsuario.getText();
             String clave = txtEditarClave.getText();
-            Departamento d = new Departamento(id, usuario, clave);
+            Departamento d = new Departamento(usuario, clave);
             con.modDepartamento(d);
             editarUsuario.setVisible(false);
             listarUsuarios();
@@ -1211,6 +1256,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevaNoticia;
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JButton btnUsuariosAdmin;
+    private javax.swing.JButton btnVistaPrevia;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JDialog editarUsuario;
     private javax.swing.JLabel jLabel1;
@@ -1221,6 +1267,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1255,6 +1302,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPanel panelNoticias;
     private javax.swing.JPanel panelUsuario;
     private javax.swing.JPanel panelUsuarios;
+    private javax.swing.JPanel panelVistaPrevia;
     private javax.swing.JDialog peticionIP;
     private javax.swing.JMenuItem salirMenuItem;
     private javax.swing.JTable tablaTodasNoticias;
@@ -1270,5 +1318,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     private javax.swing.JTextField txtVigencia;
+    private javax.swing.JDialog vistaPrevia;
     // End of variables declaration//GEN-END:variables
 }
