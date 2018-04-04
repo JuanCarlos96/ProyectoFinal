@@ -57,7 +57,7 @@ public class Conector {
                         + "ON DELETE CASCADE ON UPDATE CASCADE,"
                     + "Imagen   LONGBLOB,"
                     + "Fecha    DATE,"// Formato: YYYY-MM-DD
-                    + "Ruta     VARCHAR(80)"// Ruta donde se guardará la foto en el equipo
+                    + "Ruta     VARCHAR(80),"// Ruta donde se guardará la foto en el equipo
                     + "DiasVigencia INTEGER,"
                     + "Vigente  BOOLEAN,"
                     + "Publica  BOOLEAN,"// Campo del visto bueno (checkbox)
@@ -139,6 +139,15 @@ public class Conector {
             
             sql = "DROP TABLE Departamento";
             stmnt.execute(sql);
+            
+            File admin = new File("administrador.dat");
+            File usuarios = new File("usuarios.dat");
+            
+            if (admin.exists())
+                admin.delete();
+            
+            if (usuarios.exists())
+                usuarios.delete();
             
             System.out.println("Tablas borradas");
             crearTablas();

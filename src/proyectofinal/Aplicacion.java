@@ -7,7 +7,10 @@ package proyectofinal;
 
 import java.awt.Color;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Aplicacion extends javax.swing.JFrame {
     private Conector con;
+    private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private Date date = new Date();
 
     /**
      * Creates new form Aplicacion
@@ -161,8 +166,6 @@ public class Aplicacion extends javax.swing.JFrame {
         btnCancelarNuevoUsuario = new javax.swing.JButton();
         btnAceptarNuevoUsuario = new javax.swing.JButton();
         editarUsuario = new javax.swing.JDialog();
-        jLabel7 = new javax.swing.JLabel();
-        txtEditarUsuario = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtEditarClave = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -197,6 +200,8 @@ public class Aplicacion extends javax.swing.JFrame {
         middleCenter = new javax.swing.JRadioButton();
         btnVistaPrevia = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
+        btnCancelarNuevaNoticia = new javax.swing.JButton();
+        btnAceptarNuevaNoticia = new javax.swing.JButton();
         buttonGroup1 = new javax.swing.ButtonGroup();
         vistaPrevia = new javax.swing.JDialog();
         panelVistaPrevia = new javax.swing.JPanel();
@@ -446,6 +451,11 @@ public class Aplicacion extends javax.swing.JFrame {
         }
 
         btnNuevaNoticia.setText("Nueva");
+        btnNuevaNoticia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaNoticiaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
@@ -641,9 +651,7 @@ public class Aplicacion extends javax.swing.JFrame {
         editarUsuario.setTitle("Editar usuario");
         editarUsuario.setModal(true);
         editarUsuario.setResizable(false);
-        editarUsuario.setSize(new java.awt.Dimension(271, 302));
-
-        jLabel7.setText("Nuevo usuario");
+        editarUsuario.setSize(new java.awt.Dimension(271, 238));
 
         jLabel8.setText("Nueva contraseña");
 
@@ -685,25 +693,12 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelarEditarUsuario))
                     .addGroup(editarUsuarioLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
                         .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel7))
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(txtEditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel8))
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(txtEditarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel9))
-                            .addGroup(editarUsuarioLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(lblFortaleza2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel8)
+                            .addComponent(txtEditarClave, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(lblFortaleza2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarUsuarioLayout.createSequentialGroup()
                         .addGap(0, 22, Short.MAX_VALUE)
@@ -729,11 +724,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblClave, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addComponent(jLabel7)
-                .addGap(2, 2, 2)
-                .addComponent(txtEditarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addGap(2, 2, 2)
                 .addComponent(txtEditarClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -745,11 +736,13 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGroup(editarUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptarEditarUsuario)
                     .addComponent(btnCancelarEditarUsuario))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
+        nuevaNoticia.setTitle("Nueva noticia");
         nuevaNoticia.setModal(true);
         nuevaNoticia.setResizable(false);
+        nuevaNoticia.setSize(new java.awt.Dimension(503, 376));
 
         jLabel12.setText("Fecha: ");
 
@@ -797,7 +790,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(bottomLeft)
                     .addComponent(topLeft)
                     .addComponent(middleLeft))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(middleCenter)
@@ -805,7 +798,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(middleRight))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(topCenter)
-                        .addGap(76, 76, 76)
+                        .addGap(81, 81, 81)
                         .addComponent(topRight))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(bottomCenter)
@@ -821,7 +814,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(topCenter)
                     .addComponent(topRight)
                     .addComponent(topLeft))
-                .addGap(52, 52, 52)
+                .addGap(51, 51, 51)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(middleCenter)
                     .addComponent(middleLeft)
@@ -837,6 +830,10 @@ public class Aplicacion extends javax.swing.JFrame {
         btnVistaPrevia.setText("Vista previa");
 
         jLabel17.setText("días");
+
+        btnCancelarNuevaNoticia.setText("Cancelar");
+
+        btnAceptarNuevaNoticia.setText("Aceptar");
 
         javax.swing.GroupLayout nuevaNoticiaLayout = new javax.swing.GroupLayout(nuevaNoticia.getContentPane());
         nuevaNoticia.getContentPane().setLayout(nuevaNoticiaLayout);
@@ -873,9 +870,18 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(nuevaNoticiaLayout.createSequentialGroup()
-                                .addComponent(btnVistaPrevia)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 33, Short.MAX_VALUE))
+                            .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                                        .addComponent(btnVistaPrevia)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevaNoticiaLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(btnAceptarNuevaNoticia)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelarNuevaNoticia)))))
                 .addContainerGap())
         );
         nuevaNoticiaLayout.setVerticalGroup(
@@ -901,13 +907,21 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVistaPrevia)
-                    .addComponent(jLabel17))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nuevaNoticiaLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVistaPrevia)
+                            .addComponent(jLabel17))
+                        .addContainerGap(52, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nuevaNoticiaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(nuevaNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelarNuevaNoticia)
+                            .addComponent(btnAceptarNuevaNoticia))
+                        .addContainerGap())))
         );
 
         vistaPrevia.setModal(true);
@@ -1028,6 +1042,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     panelUsuario.setVisible(true);
                     mainAplicacion.setLocationRelativeTo(null);
                     mainAplicacion.pack();
+                    mainAplicacion.setTitle(txtUser.getText());
                     mainAplicacion.setVisible(true);
                     this.setVisible(false);
                 } catch (IOException e) {
@@ -1050,6 +1065,8 @@ public class Aplicacion extends javax.swing.JFrame {
         tablaTodasNoticias.clearSelection();
         panelUsuarios.setVisible(false);
         panelNoticias.setVisible(true);
+        btnModUsuario.setEnabled(false);
+        btnEliminarUsuario.setEnabled(false);
     }//GEN-LAST:event_btnNoticiasAdminActionPerformed
 
     private void salirMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuItemActionPerformed
@@ -1077,6 +1094,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 panelUsuario.setVisible(false);
                 mainAplicacion.setLocationRelativeTo(null);
                 mainAplicacion.pack();
+                mainAplicacion.setTitle("Administrador");
                 mainAplicacion.setVisible(true);
                 peticionIP.setVisible(false);
                 this.setVisible(false);
@@ -1159,9 +1177,8 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaUsuariosMouseReleased
 
     private void btnModUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModUsuarioActionPerformed
-        lblUsuario.setText((String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 1));
-        lblClave.setText((String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 2));
-        txtEditarUsuario.setText("");
+        lblUsuario.setText((String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0));
+        lblClave.setText((String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 1));
         txtEditarClave.setText("");
         lblFortaleza2.setText("");
         editarUsuario.setLocationRelativeTo(null);
@@ -1187,18 +1204,28 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarEditarUsuarioActionPerformed
 
     private void btnAceptarEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarEditarUsuarioActionPerformed
-        if (txtEditarUsuario.getText().equals("") || txtEditarClave.getText().equals("")) {
+        if (txtEditarClave.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Algún campo vacío");
         }else {
-            String usuario = txtEditarUsuario.getText();
+            String usuario = lblUsuario.getText();
             String clave = txtEditarClave.getText();
             Departamento d = new Departamento(usuario, clave);
             con.modDepartamento(d);
             editarUsuario.setVisible(false);
             listarUsuarios();
             JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
+            btnModUsuario.setEnabled(false);
+            btnEliminarUsuario.setEnabled(false);
         }
     }//GEN-LAST:event_btnAceptarEditarUsuarioActionPerformed
+
+    private void btnNuevaNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaNoticiaActionPerformed
+        lblFecha.setText(df.format(date));
+        lblDepartamento.setText(mainAplicacion.getTitle());
+        nuevaNoticia.setLocationRelativeTo(null);
+        nuevaNoticia.pack();
+        nuevaNoticia.setVisible(true);
+    }//GEN-LAST:event_btnNuevaNoticiaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1244,8 +1271,10 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JRadioButton bottomLeft;
     private javax.swing.JRadioButton bottomRight;
     private javax.swing.JButton btnAceptarEditarUsuario;
+    private javax.swing.JButton btnAceptarNuevaNoticia;
     private javax.swing.JButton btnAceptarNuevoUsuario;
     private javax.swing.JButton btnCancelarEditarUsuario;
+    private javax.swing.JButton btnCancelarNuevaNoticia;
     private javax.swing.JButton btnCancelarNuevoUsuario;
     private javax.swing.JButton btnConectarBD;
     private javax.swing.JButton btnEliminarUsuario;
@@ -1273,7 +1302,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
@@ -1311,7 +1339,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JRadioButton topLeft;
     private javax.swing.JRadioButton topRight;
     private javax.swing.JTextField txtEditarClave;
-    private javax.swing.JTextField txtEditarUsuario;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtNuevaClave;
     private javax.swing.JTextField txtNuevoUsuario;
