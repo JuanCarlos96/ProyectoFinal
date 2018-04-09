@@ -6,12 +6,24 @@
 package proyectofinal;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,6 +34,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private Conector con;
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     private Date date = new Date();
+    private BufferedImage image = null;
+    private byte[] imageblob = null;
 
     /**
      * Creates new form Aplicacion
@@ -119,6 +133,18 @@ public class Aplicacion extends javax.swing.JFrame {
             modeloUsuarios.addRow(new Object[] {d.getUsuario(), d.getClave()});
         }
     }
+    
+    private static BufferedImage resize(BufferedImage img, int newW, int newH) {
+        //Una función para reescalar una imagen. Se puede reutilizar tal cual
+        int w = img.getWidth();
+        int h = img.getHeight();
+        BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
+        Graphics2D g = dimg.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(img, 0, 0, newW, newH, 0, 0, w, h, null);
+        g.dispose();
+        return dimg;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -205,6 +231,7 @@ public class Aplicacion extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         vistaPrevia = new javax.swing.JDialog();
         panelVistaPrevia = new javax.swing.JPanel();
+        jFileChooser1 = new javax.swing.JFileChooser();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -749,6 +776,11 @@ public class Aplicacion extends javax.swing.JFrame {
         jLabel13.setText("Departamento: ");
 
         btnImagen.setText("Seleccionar imagen");
+        btnImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImagenActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Texto");
 
@@ -763,22 +795,31 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         buttonGroup1.add(topLeft);
+        topLeft.setActionCommand("topLeft");
 
         buttonGroup1.add(topRight);
+        topRight.setActionCommand("topRight");
 
         buttonGroup1.add(bottomLeft);
+        bottomLeft.setActionCommand("bottomLeft");
 
         buttonGroup1.add(bottomRight);
+        bottomRight.setActionCommand("bottomRight");
 
         buttonGroup1.add(middleLeft);
+        middleLeft.setActionCommand("middleLeft");
 
         buttonGroup1.add(middleRight);
+        middleRight.setActionCommand("middleRight");
 
         buttonGroup1.add(bottomCenter);
+        bottomCenter.setActionCommand("bottomCenter");
 
         buttonGroup1.add(topCenter);
+        topCenter.setActionCommand("topCenter");
 
         buttonGroup1.add(middleCenter);
+        middleCenter.setActionCommand("middleCenter");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -828,6 +869,11 @@ public class Aplicacion extends javax.swing.JFrame {
         );
 
         btnVistaPrevia.setText("Vista previa");
+        btnVistaPrevia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVistaPreviaActionPerformed(evt);
+            }
+        });
 
         jLabel17.setText("días");
 
@@ -925,34 +971,30 @@ public class Aplicacion extends javax.swing.JFrame {
         );
 
         vistaPrevia.setModal(true);
+        vistaPrevia.setPreferredSize(new java.awt.Dimension(300, 200));
         vistaPrevia.setResizable(false);
+        vistaPrevia.setSize(new java.awt.Dimension(300, 200));
 
         javax.swing.GroupLayout panelVistaPreviaLayout = new javax.swing.GroupLayout(panelVistaPrevia);
         panelVistaPrevia.setLayout(panelVistaPreviaLayout);
         panelVistaPreviaLayout.setHorizontalGroup(
             panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         panelVistaPreviaLayout.setVerticalGroup(
             panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+            .addGap(0, 200, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout vistaPreviaLayout = new javax.swing.GroupLayout(vistaPrevia.getContentPane());
         vistaPrevia.getContentPane().setLayout(vistaPreviaLayout);
         vistaPreviaLayout.setHorizontalGroup(
             vistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vistaPreviaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         vistaPreviaLayout.setVerticalGroup(
             vistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vistaPreviaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1227,6 +1269,57 @@ public class Aplicacion extends javax.swing.JFrame {
         nuevaNoticia.setVisible(true);
     }//GEN-LAST:event_btnNuevaNoticiaActionPerformed
 
+    private void btnImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenActionPerformed
+        //Se crea un filtro para los ficheros a leer
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Ficheros de imagen", "jpg", "png");
+        jFileChooser1.setFileFilter(filter);
+
+        //Valor que retorna al elegir una opcion en el file chooser
+        int opcion = this.jFileChooser1.showOpenDialog(this);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            //El path absoluto del archivo elegido
+            File f = this.jFileChooser1.getSelectedFile();
+            System.out.println(f);
+            try {
+                image = ImageIO.read(f);
+                System.out.println("Imagen cargada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnImagenActionPerformed
+
+    private void btnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVistaPreviaActionPerformed
+        if (image==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+        }else if (jTextArea1.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+        }else {
+            try {
+                String position = buttonGroup1.getSelection().getActionCommand();
+                String texto = jTextArea1.getText();
+                
+                switch(position) {
+                    case "topLeft":
+                        Graphics g = image.getGraphics();
+                        g.setFont(g.getFont().deriveFont(30f));
+                        g.drawString(texto, 10, 10);
+                        g.dispose();
+                        ImageIO.write(image, "png", new File("test.png"));
+                        
+                        panelVistaPrevia.add(new JLabel(new ImageIcon(resize(image, 300, 200))));
+                        vistaPrevia.revalidate();
+                        vistaPrevia.pack();
+                        vistaPrevia.setLocationRelativeTo(null);
+                        vistaPrevia.setVisible(true);
+                        break;
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnVistaPreviaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1288,6 +1381,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JDialog editarUsuario;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
