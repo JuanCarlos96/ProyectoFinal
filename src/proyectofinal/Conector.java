@@ -130,6 +130,25 @@ public class Conector {
         return usuarios;
     }
     
+    public int maxIdNot() {
+        int id = 1;
+        
+        try {
+            sql = "SELECT MAX(IdNot) FROM Noticia";
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()) {
+                id = rs.getInt("MAX(IdNot)")+1;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return id;
+    }
+    
     public void reiniciarBD() {
         try {
             stmnt = conexion.createStatement();

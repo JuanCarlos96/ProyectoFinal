@@ -8,6 +8,7 @@ package proyectofinal;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -36,6 +37,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private Date date = new Date();
     private BufferedImage image = null;
     private byte[] imageblob = null;
+    private String absPath;
 
     /**
      * Creates new form Aplicacion
@@ -1281,8 +1283,14 @@ public class Aplicacion extends javax.swing.JFrame {
             File f = this.jFileChooser1.getSelectedFile();
             System.out.println(f);
             try {
-                image = ImageIO.read(f);
+                image = ImageIO.read(f);// Se toma la imagen seleccionada
                 System.out.println("Imagen cargada");
+                image = resize(image, 1200, 768);// Se reescala para la televisión
+                System.out.println("Imagen reescalada");
+                File imagen = new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText());
+                absPath = imagen.getAbsolutePath();// Ruta absoluta de la imagen
+                System.out.println(absPath);
+                ImageIO.write(image, "png", imagen);// Se guarda la imagen reescalada para mostrarla en la televisión
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1298,22 +1306,23 @@ public class Aplicacion extends javax.swing.JFrame {
             try {
                 String position = buttonGroup1.getSelection().getActionCommand();
                 String texto = jTextArea1.getText();
+                boolean posSeleccionada = false;
+                
+                Graphics g = image.getGraphics();
+                g.setFont(g.getFont().deriveFont(30f));
                 
                 switch(position) {
                     case "topLeft":
-                        Graphics g = image.getGraphics();
-                        g.setFont(g.getFont().deriveFont(30f));
                         g.drawString(texto, 10, 10);
-                        g.dispose();
-                        ImageIO.write(image, "png", new File("test.png"));
-                        
-                        panelVistaPrevia.add(new JLabel(new ImageIcon(resize(image, 300, 200))));
-                        vistaPrevia.revalidate();
-                        vistaPrevia.pack();
-                        vistaPrevia.setLocationRelativeTo(null);
-                        vistaPrevia.setVisible(true);
+                        posSeleccionada = true;
                         break;
                 }
+                
+                if (posSeleccionada) {
+                    g.dispose();
+                    ImageIO.write(image, "png", new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText()));
+                }
+                
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
