@@ -38,6 +38,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private BufferedImage image = null;
     private byte[] imageblob = null;
     private String absPath;
+    private File imagen_seleccionada = null;
 
     /**
      * Creates new form Aplicacion
@@ -882,6 +883,11 @@ public class Aplicacion extends javax.swing.JFrame {
         btnCancelarNuevaNoticia.setText("Cancelar");
 
         btnAceptarNuevaNoticia.setText("Aceptar");
+        btnAceptarNuevaNoticia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarNuevaNoticiaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout nuevaNoticiaLayout = new javax.swing.GroupLayout(nuevaNoticia.getContentPane());
         nuevaNoticia.getContentPane().setLayout(nuevaNoticiaLayout);
@@ -973,19 +979,19 @@ public class Aplicacion extends javax.swing.JFrame {
         );
 
         vistaPrevia.setModal(true);
-        vistaPrevia.setPreferredSize(new java.awt.Dimension(300, 200));
+        vistaPrevia.setPreferredSize(new java.awt.Dimension(600, 400));
         vistaPrevia.setResizable(false);
-        vistaPrevia.setSize(new java.awt.Dimension(300, 200));
+        vistaPrevia.setSize(new java.awt.Dimension(600, 400));
 
         javax.swing.GroupLayout panelVistaPreviaLayout = new javax.swing.GroupLayout(panelVistaPrevia);
         panelVistaPrevia.setLayout(panelVistaPreviaLayout);
         panelVistaPreviaLayout.setHorizontalGroup(
             panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         panelVistaPreviaLayout.setVerticalGroup(
             panelVistaPreviaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout vistaPreviaLayout = new javax.swing.GroupLayout(vistaPrevia.getContentPane());
@@ -1280,10 +1286,10 @@ public class Aplicacion extends javax.swing.JFrame {
         int opcion = this.jFileChooser1.showOpenDialog(this);
         if (opcion == JFileChooser.APPROVE_OPTION) {
             //El path absoluto del archivo elegido
-            File f = this.jFileChooser1.getSelectedFile();
-            System.out.println(f);
-            try {
-                image = ImageIO.read(f);// Se toma la imagen seleccionada
+            imagen_seleccionada = this.jFileChooser1.getSelectedFile();
+            System.out.println(imagen_seleccionada);
+            /*try {
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
                 System.out.println("Imagen cargada");
                 image = resize(image, 1200, 768);// Se reescala para la televisión
                 System.out.println("Imagen reescalada");
@@ -1293,12 +1299,12 @@ public class Aplicacion extends javax.swing.JFrame {
                 ImageIO.write(image, "png", imagen);// Se guarda la imagen reescalada para mostrarla en la televisión
             } catch (IOException ex) {
                 ex.printStackTrace();
-            }
+            }*/
         }
     }//GEN-LAST:event_btnImagenActionPerformed
 
     private void btnVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVistaPreviaActionPerformed
-        if (image==null) {
+        if (imagen_seleccionada==null) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
         }else if (jTextArea1.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Debe escribir algo");
@@ -1308,26 +1314,79 @@ public class Aplicacion extends javax.swing.JFrame {
                 String texto = jTextArea1.getText();
                 boolean posSeleccionada = false;
                 
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia;
+                
                 Graphics g = image.getGraphics();
                 g.setFont(g.getFont().deriveFont(30f));
                 
                 switch(position) {
                     case "topLeft":
-                        g.drawString(texto, 10, 10);
+                        g.drawString(texto, 100, 100);
                         posSeleccionada = true;
                         break;
                 }
                 
                 if (posSeleccionada) {
                     g.dispose();
+                    imagenVistaPrevia = resize(image, 600, 400);// Se reescala para la vista previa
+                    JLabel imageLabel = new JLabel();
+                    imageLabel.setIcon(new ImageIcon(imagenVistaPrevia));
+                    panelVistaPrevia.add(imageLabel);
+                    vistaPrevia.setLocationRelativeTo(null);
+                    vistaPrevia.setVisible(true);
                     ImageIO.write(image, "png", new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText()));
                 }
-                
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnVistaPreviaActionPerformed
+
+    private void btnAceptarNuevaNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarNuevaNoticiaActionPerformed
+        if (image==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+        } if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+        } if (txtVigencia.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe especificar los días de vigencia");
+        } else {
+            try {
+                int idNoticia = con.maxIdNot();// ID de la noticia
+                String departamento = lblDepartamento.getText();// Departamento al que pertenece la noticia
+                
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                BufferedImage smallImage = resize(image, 600, 400);
+                ImageIO.write(smallImage, "png", baos);
+                this.imageblob = baos.toByteArray();// Imagen convertida a bytes para guardarla en la base de datos
+                
+                String fecha = lblFecha.getText();// Fecha de la noticia
+                
+                BufferedImage largeImage = resize(image, 1200, 768);
+                File imagen = new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText());
+                String ruta = "/home/juancarlos/Imágenes/" + imagen.getName();// Ruta de la imagen
+                //String ruta = "/home/pi/Pictures/" + imagen.getName();
+                System.out.println(ruta);
+                ImageIO.write(largeImage, "png", new File(ruta));// Se guarda la imagen reescalada para mostrarla en la televisión, en la ruta especificada
+                
+                int diasVigencia = 0;// Días de vigencia
+                
+                try {
+                    diasVigencia = Integer.parseInt(txtVigencia.getText());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Días de vigencia incorrectos");
+                }
+                
+                int vigente = 0;// Booleano de si es vigente o no | 0->false 1->true
+                int publica = 0;// Booleano de si es pública o no | 0->false 1->true
+                
+                con.addNoticia(new Noticia(idNoticia, diasVigencia, vigente, publica, departamento, fecha, ruta, imageblob));
+            } catch (IOException ex) {
+                Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAceptarNuevaNoticiaActionPerformed
 
     /**
      * @param args the command line arguments

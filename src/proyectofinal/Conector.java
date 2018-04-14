@@ -149,6 +149,10 @@ public class Conector {
         return id;
     }
     
+    public void addNoticia(Noticia noticia) {
+        
+    }
+    
     public void reiniciarBD() {
         try {
             stmnt = conexion.createStatement();
