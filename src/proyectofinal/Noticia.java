@@ -25,6 +25,21 @@ public class Noticia {
         this.imagen = imagen;
     }
 
+    public Noticia(int idNoticia, String fecha, int diasVigencia) {
+        this.idNoticia = idNoticia;
+        this.fecha = fecha;
+        this.diasVigencia = diasVigencia;
+    }
+
+    public Noticia(int idNoticia, String departamento, String fecha, int diasVigencia, int vigente, int publica) {
+        this.idNoticia = idNoticia;
+        this.departamento = departamento;
+        this.fecha = fecha;
+        this.diasVigencia = diasVigencia;
+        this.vigente = vigente;
+        this.publica = publica;
+    }
+
     public int getIdNoticia() {
         return idNoticia;
     }

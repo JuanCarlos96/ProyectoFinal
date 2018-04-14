@@ -37,7 +37,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private Date date = new Date();
     private BufferedImage image = null;
     private byte[] imageblob = null;
-    private String absPath;
     private File imagen_seleccionada = null;
 
     /**
@@ -137,6 +136,19 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }
     
+    private void listarNoticiasUser() {
+        DefaultTableModel modeloNoticias = (DefaultTableModel) jTable1.getModel();
+        ArrayList<Noticia> noticias = con.listaNoticiasUser();
+        
+        for (int i=modeloNoticias.getRowCount()-1; i>=0; i--) {
+            modeloNoticias.removeRow(i);
+        }
+        
+        for (Noticia n:noticias) {
+            modeloNoticias.addRow(new Object[] {n.getIdNoticia(), n.getFecha(), n.getDiasVigencia()});
+        }
+    }
+    
     private static BufferedImage resize(BufferedImage img, int newW, int newH) {
         //Una función para reescalar una imagen. Se puede reutilizar tal cual
         int w = img.getWidth();
@@ -147,6 +159,14 @@ public class Aplicacion extends javax.swing.JFrame {
         g.drawImage(img, 0, 0, newW, newH, 0, 0, w, h, null);
         g.dispose();
         return dimg;
+    }
+    
+    private BufferedImage writeImage(BufferedImage image, String texto, int x, int y) {
+        Graphics g = image.getGraphics();
+        g.setFont(g.getFont().deriveFont(30f));
+        g.drawString(texto, x, y);
+        g.dispose();
+        return resize(image, 600, 400);// Se reescala para la vista previa
     }
 
     /**
@@ -178,6 +198,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         btnNuevaNoticia = new javax.swing.JButton();
+        btnVerNoticia = new javax.swing.JButton();
         adminMenuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
         salirMenuItem = new javax.swing.JMenuItem();
@@ -363,14 +384,14 @@ public class Aplicacion extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Departamento", "Fecha", "", ""
+                "Id Noticia", "Departamento", "Fecha", "Días de vigencia", "Vigente", "Pública"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -388,6 +409,8 @@ public class Aplicacion extends javax.swing.JFrame {
             tablaTodasNoticias.getColumnModel().getColumn(1).setResizable(false);
             tablaTodasNoticias.getColumnModel().getColumn(2).setResizable(false);
             tablaTodasNoticias.getColumnModel().getColumn(3).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(4).setResizable(false);
+            tablaTodasNoticias.getColumnModel().getColumn(5).setResizable(false);
         }
 
         javax.swing.GroupLayout panelNoticiasLayout = new javax.swing.GroupLayout(panelNoticias);
@@ -455,11 +478,11 @@ public class Aplicacion extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Días de vigencia", ""
+                "Id Noticia", "Fecha", "Días de vigencia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -471,6 +494,11 @@ public class Aplicacion extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTable1MouseReleased(evt);
             }
         });
         jScrollPane3.setViewportView(jTable1);
@@ -487,6 +515,9 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
 
+        btnVerNoticia.setText("Ver");
+        btnVerNoticia.setEnabled(false);
+
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
         panelUsuarioLayout.setHorizontalGroup(
@@ -497,7 +528,9 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUsuarioLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnNuevaNoticia)))
+                        .addComponent(btnNuevaNoticia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVerNoticia)))
                 .addContainerGap())
         );
         panelUsuarioLayout.setVerticalGroup(
@@ -506,7 +539,9 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNuevaNoticia)
+                .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNuevaNoticia)
+                    .addComponent(btnVerNoticia))
                 .addContainerGap())
         );
 
@@ -979,7 +1014,6 @@ public class Aplicacion extends javax.swing.JFrame {
         );
 
         vistaPrevia.setModal(true);
-        vistaPrevia.setPreferredSize(new java.awt.Dimension(600, 400));
         vistaPrevia.setResizable(false);
         vistaPrevia.setSize(new java.awt.Dimension(600, 400));
 
@@ -1088,6 +1122,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     }
                     br.close();
                     
+                    listarNoticiasUser();
                     panelAdmin.setVisible(false);
                     panelUsuario.setVisible(true);
                     mainAplicacion.setLocationRelativeTo(null);
@@ -1272,6 +1307,9 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnNuevaNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaNoticiaActionPerformed
         lblFecha.setText(df.format(date));
         lblDepartamento.setText(mainAplicacion.getTitle());
+        jTextArea1.setText("");
+        txtVigencia.setText("");
+        buttonGroup1.clearSelection();
         nuevaNoticia.setLocationRelativeTo(null);
         nuevaNoticia.pack();
         nuevaNoticia.setVisible(true);
@@ -1288,18 +1326,6 @@ public class Aplicacion extends javax.swing.JFrame {
             //El path absoluto del archivo elegido
             imagen_seleccionada = this.jFileChooser1.getSelectedFile();
             System.out.println(imagen_seleccionada);
-            /*try {
-                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
-                System.out.println("Imagen cargada");
-                image = resize(image, 1200, 768);// Se reescala para la televisión
-                System.out.println("Imagen reescalada");
-                File imagen = new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText());
-                absPath = imagen.getAbsolutePath();// Ruta absoluta de la imagen
-                System.out.println(absPath);
-                ImageIO.write(image, "png", imagen);// Se guarda la imagen reescalada para mostrarla en la televisión
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }*/
         }
     }//GEN-LAST:event_btnImagenActionPerformed
 
@@ -1316,21 +1342,50 @@ public class Aplicacion extends javax.swing.JFrame {
                 
                 image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
                 System.out.println("Imagen cargada");
-                BufferedImage imagenVistaPrevia;
-                
-                Graphics g = image.getGraphics();
-                g.setFont(g.getFont().deriveFont(30f));
+                BufferedImage imagenVistaPrevia = null;
                 
                 switch(position) {
                     case "topLeft":
-                        g.drawString(texto, 100, 100);
+                        imagenVistaPrevia = writeImage(image, texto, 100, 100);
                         posSeleccionada = true;
+                        break;
+                    case "topCenter":
+                        imagenVistaPrevia = writeImage(image, texto, 100, 300);
+                        posSeleccionada = true;
+                        break;
+                    case "topRight":
+                        imagenVistaPrevia = writeImage(image, texto, 100, 500);
+                        posSeleccionada = true;
+                        break;
+                    case "middleLeft":
+                        imagenVistaPrevia = writeImage(image, texto, 200, 100);
+                        posSeleccionada = true;
+                        break;
+                    case "middleCenter":
+                        imagenVistaPrevia = writeImage(image, texto, 200, 300);
+                        posSeleccionada = true;
+                        break;
+                    case "middleRight":
+                        imagenVistaPrevia = writeImage(image, texto, 200, 500);
+                        posSeleccionada = true;
+                        break;
+                    case "bottomLeft":
+                        imagenVistaPrevia = writeImage(image, texto, 300, 100);
+                        posSeleccionada = true;
+                        break;
+                    case "bottomCenter":
+                        imagenVistaPrevia = writeImage(image, texto, 300, 300);
+                        posSeleccionada = true;
+                        break;
+                    case "bottomRight":
+                        imagenVistaPrevia = writeImage(image, texto, 300, 500);
+                        posSeleccionada = true;
+                        break;
+                    default:
                         break;
                 }
                 
                 if (posSeleccionada) {
-                    g.dispose();
-                    imagenVistaPrevia = resize(image, 600, 400);// Se reescala para la vista previa
                     JLabel imageLabel = new JLabel();
                     imageLabel.setIcon(new ImageIcon(imagenVistaPrevia));
                     panelVistaPrevia.add(imageLabel);
@@ -1353,6 +1408,8 @@ public class Aplicacion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debe especificar los días de vigencia");
         } else {
             try {
+                boolean insertar = false;
+                
                 int idNoticia = con.maxIdNot();// ID de la noticia
                 String departamento = lblDepartamento.getText();// Departamento al que pertenece la noticia
                 
@@ -1374,6 +1431,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 
                 try {
                     diasVigencia = Integer.parseInt(txtVigencia.getText());
+                    insertar = true;
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Días de vigencia incorrectos");
                 }
@@ -1381,12 +1439,27 @@ public class Aplicacion extends javax.swing.JFrame {
                 int vigente = 0;// Booleano de si es vigente o no | 0->false 1->true
                 int publica = 0;// Booleano de si es pública o no | 0->false 1->true
                 
-                con.addNoticia(new Noticia(idNoticia, diasVigencia, vigente, publica, departamento, fecha, ruta, imageblob));
+                if (insertar) {
+                    con.addNoticia(new Noticia(idNoticia, diasVigencia, vigente, publica, departamento, fecha, ruta, imageblob));
+                    imagen_seleccionada = null;
+                    image = null;
+                    imageblob = null;
+                    nuevaNoticia.setVisible(false);
+                    btnVerNoticia.setEnabled(false);
+                    listarNoticiasUser();
+                    JOptionPane.showMessageDialog(null, "Noticia creada correctamente");
+                }
             } catch (IOException ex) {
-                Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_btnAceptarNuevaNoticiaActionPerformed
+
+    private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
+        if (jTable1.getSelectedRow()>-1) {
+            btnVerNoticia.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable1MouseReleased
 
     /**
      * @param args the command line arguments
@@ -1446,6 +1519,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevaNoticia;
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JButton btnUsuariosAdmin;
+    private javax.swing.JButton btnVerNoticia;
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JDialog editarUsuario;

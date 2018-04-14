@@ -149,8 +149,59 @@ public class Conector {
         return id;
     }
     
-    public void addNoticia(Noticia noticia) {
-        
+    public void addNoticia(Noticia n) {
+        try {
+            sql = "INSERT INTO Noticia VALUES (?, ?, ?, ?, ?, ?, ? ,?)";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setInt(1, n.getIdNoticia());
+            pstmnt.setString(2, n.getDepartamento());
+            pstmnt.setBytes(3, n.getImagen());
+            pstmnt.setString(4, n.getFecha());
+            pstmnt.setString(5, n.getRuta());
+            pstmnt.setInt(6, n.getDiasVigencia());
+            pstmnt.setInt(7, n.getVigente());
+            pstmnt.setInt(8, n.getPublica());
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error creando la noticia");
+            e.printStackTrace();
+        }
+    }
+    
+    public ArrayList<Noticia> listaNoticiasUser() {
+        ArrayList<Noticia> noticias = new ArrayList();
+        try {
+            sql = "SELECT IdNot,Fecha,DiasVigencia FROM Noticia";
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()) {
+                noticias.add(new Noticia(rs.getInt("IdNot"), rs.getString("Fecha"), rs.getInt("DiasVigencia")));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Error obteniendo las noticias");
+            ex.printStackTrace();
+        }
+        return noticias;
+    }
+    
+    public ArrayList<Noticia> listaNoticiasAdmin() {
+        ArrayList<Noticia> noticias = new ArrayList();
+        try {
+            sql = "SELECT IdNot,Departamento,Fecha,DiasVigencia,Vigente,Publica FROM Noticia";
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while(rs.next()) {
+                noticias.add(new Noticia(rs.getInt("IdNot"), rs.getString("Departamento"), rs.getString("Fecha"), rs.getInt("DiasVigencia"), rs.getInt("Vigente"), rs.getInt("Publica")));
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Error obteniendo las noticias");
+            ex.printStackTrace();
+        }
+        return noticias;
     }
     
     public void reiniciarBD() {
