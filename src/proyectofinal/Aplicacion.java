@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -136,9 +137,24 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }
     
+    private void listarNoticiasAdmin() {
+        DefaultTableModel modeloTodasNoticias = (DefaultTableModel) tablaTodasNoticias.getModel();
+        ArrayList<Noticia> noticias = con.listaNoticiasAdmin();
+        
+        for (int i=modeloTodasNoticias.getRowCount()-1; i>=0; i--) {
+            modeloTodasNoticias.removeRow(i);
+        }
+        
+        for (Noticia n:noticias) {
+            String vigente = n.getVigente()==0? "No":"Sí";
+            String publica = n.getPublica()==0? "No":"Sí";
+            modeloTodasNoticias.addRow(new Object[] {n.getIdNoticia(), n.getDepartamento(), n.getFecha(), n.getDiasVigencia(), vigente, publica});
+        }
+    }
+    
     private void listarNoticiasUser() {
         DefaultTableModel modeloNoticias = (DefaultTableModel) jTable1.getModel();
-        ArrayList<Noticia> noticias = con.listaNoticiasUser();
+        ArrayList<Noticia> noticias = con.listaNoticiasUser(txtUser.getText());
         
         for (int i=modeloNoticias.getRowCount()-1; i>=0; i--) {
             modeloNoticias.removeRow(i);
@@ -168,6 +184,10 @@ public class Aplicacion extends javax.swing.JFrame {
         g.dispose();
         return resize(image, 600, 400);// Se reescala para la vista previa
     }
+    
+    private boolean positionSelected() {
+        return buttonGroup1.getSelection()!=null;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -194,6 +214,8 @@ public class Aplicacion extends javax.swing.JFrame {
         panelNoticias = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTodasNoticias = new javax.swing.JTable();
+        btnEliminarNoticia = new javax.swing.JButton();
+        btnEditarNoticia = new javax.swing.JButton();
         panelUsuario = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -256,6 +278,22 @@ public class Aplicacion extends javax.swing.JFrame {
         vistaPrevia = new javax.swing.JDialog();
         panelVistaPrevia = new javax.swing.JPanel();
         jFileChooser1 = new javax.swing.JFileChooser();
+        editarNoticia = new javax.swing.JDialog();
+        jLabel7 = new javax.swing.JLabel();
+        txtIdNot = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        txtDepartamento = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txtRutaImagen = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        txtDiasVigencia = new javax.swing.JLabel();
+        chkVigente = new javax.swing.JCheckBox();
+        chkPublica = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         txtUser = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -403,6 +441,11 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
         tablaTodasNoticias.getTableHeader().setReorderingAllowed(false);
+        tablaTodasNoticias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tablaTodasNoticiasMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaTodasNoticias);
         if (tablaTodasNoticias.getColumnModel().getColumnCount() > 0) {
             tablaTodasNoticias.getColumnModel().getColumn(0).setResizable(false);
@@ -413,15 +456,36 @@ public class Aplicacion extends javax.swing.JFrame {
             tablaTodasNoticias.getColumnModel().getColumn(5).setResizable(false);
         }
 
+        btnEliminarNoticia.setText("Eliminar");
+        btnEliminarNoticia.setEnabled(false);
+
+        btnEditarNoticia.setText("Ver");
+        btnEditarNoticia.setEnabled(false);
+        btnEditarNoticia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarNoticiaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelNoticiasLayout = new javax.swing.GroupLayout(panelNoticias);
         panelNoticias.setLayout(panelNoticiasLayout);
         panelNoticiasLayout.setHorizontalGroup(
             panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelNoticiasLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEditarNoticia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarNoticia))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
         );
         panelNoticiasLayout.setVerticalGroup(
             panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+            .addGroup(panelNoticiasLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelNoticiasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarNoticia)
+                    .addComponent(btnEditarNoticia)))
         );
 
         jLayeredPane1.setLayer(panelUsuarios, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -834,30 +898,75 @@ public class Aplicacion extends javax.swing.JFrame {
 
         buttonGroup1.add(topLeft);
         topLeft.setActionCommand("topLeft");
+        topLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topLeftActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(topRight);
         topRight.setActionCommand("topRight");
+        topRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topRightActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(bottomLeft);
         bottomLeft.setActionCommand("bottomLeft");
+        bottomLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomLeftActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(bottomRight);
         bottomRight.setActionCommand("bottomRight");
+        bottomRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomRightActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(middleLeft);
         middleLeft.setActionCommand("middleLeft");
+        middleLeft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                middleLeftActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(middleRight);
         middleRight.setActionCommand("middleRight");
+        middleRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                middleRightActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(bottomCenter);
         bottomCenter.setActionCommand("bottomCenter");
+        bottomCenter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottomCenterActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(topCenter);
         topCenter.setActionCommand("topCenter");
+        topCenter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topCenterActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(middleCenter);
         middleCenter.setActionCommand("middleCenter");
+        middleCenter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                middleCenterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1039,6 +1148,121 @@ public class Aplicacion extends javax.swing.JFrame {
             .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        editarNoticia.setModal(true);
+        editarNoticia.setResizable(false);
+        editarNoticia.setSize(new java.awt.Dimension(519, 276));
+
+        jLabel7.setText("Id Noticia");
+
+        jLabel18.setText("Departamento");
+
+        jLabel19.setText("Fecha");
+
+        jLabel20.setText("Ruta imagen");
+
+        jLabel21.setText("Días de vigencia");
+
+        chkVigente.setText("Vigente");
+
+        chkPublica.setText("Pública");
+
+        jButton1.setText("Ver imagen");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Aceptar");
+
+        javax.swing.GroupLayout editarNoticiaLayout = new javax.swing.GroupLayout(editarNoticia.getContentPane());
+        editarNoticia.getContentPane().setLayout(editarNoticiaLayout);
+        editarNoticiaLayout.setHorizontalGroup(
+            editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editarNoticiaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtIdNot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(txtDiasVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkVigente)
+                    .addComponent(chkPublica)
+                    .addComponent(jLabel21))
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editarNoticiaLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(editarNoticiaLayout.createSequentialGroup()
+                                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(editarNoticiaLayout.createSequentialGroup()
+                                        .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel20)
+                                            .addComponent(jLabel18))
+                                        .addGap(0, 192, Short.MAX_VALUE))
+                                    .addComponent(txtRutaImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(12, 12, 12))
+                            .addGroup(editarNoticiaLayout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarNoticiaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addContainerGap())))
+        );
+        editarNoticiaLayout.setVerticalGroup(
+            editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(editarNoticiaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIdNot, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRutaImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editarNoticiaLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(editarNoticiaLayout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDiasVigencia, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1))
+                        .addGap(18, 18, 18)
+                        .addComponent(chkVigente)
+                        .addGap(24, 24, 24)
+                        .addComponent(chkPublica)
+                        .addContainerGap(39, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarNoticiaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(editarNoticiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton3))
+                        .addContainerGap())))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("INICIAR SESIÓN");
         setResizable(false);
@@ -1175,6 +1399,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
                 listarUsuarios();
+                listarNoticiasAdmin();
                 panelAdmin.setVisible(true);
                 panelUsuario.setVisible(false);
                 mainAplicacion.setLocationRelativeTo(null);
@@ -1248,6 +1473,7 @@ public class Aplicacion extends javax.swing.JFrame {
             String departamento = (String) tablaUsuarios.getValueAt(tablaUsuarios.getSelectedRow(), 0);
             con.eliminarDepartamento(departamento);
             listarUsuarios();
+            listarNoticiasAdmin();
             JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
             btnModUsuario.setEnabled(false);
             btnEliminarUsuario.setEnabled(false);
@@ -1298,6 +1524,7 @@ public class Aplicacion extends javax.swing.JFrame {
             con.modDepartamento(d);
             editarUsuario.setVisible(false);
             listarUsuarios();
+            listarNoticiasAdmin();
             JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
             btnModUsuario.setEnabled(false);
             btnEliminarUsuario.setEnabled(false);
@@ -1334,65 +1561,21 @@ public class Aplicacion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
         }else if (jTextArea1.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(null, "Debe escribir algo");
+        }else if (!positionSelected()) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una posición");
         }else {
             try {
-                String position = buttonGroup1.getSelection().getActionCommand();
-                String texto = jTextArea1.getText();
-                boolean posSeleccionada = false;
-                
-                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
-                System.out.println("Imagen cargada");
-                BufferedImage imagenVistaPrevia = null;
-                
-                switch(position) {
-                    case "topLeft":
-                        imagenVistaPrevia = writeImage(image, texto, 100, 100);
-                        posSeleccionada = true;
-                        break;
-                    case "topCenter":
-                        imagenVistaPrevia = writeImage(image, texto, 100, 300);
-                        posSeleccionada = true;
-                        break;
-                    case "topRight":
-                        imagenVistaPrevia = writeImage(image, texto, 100, 500);
-                        posSeleccionada = true;
-                        break;
-                    case "middleLeft":
-                        imagenVistaPrevia = writeImage(image, texto, 200, 100);
-                        posSeleccionada = true;
-                        break;
-                    case "middleCenter":
-                        imagenVistaPrevia = writeImage(image, texto, 200, 300);
-                        posSeleccionada = true;
-                        break;
-                    case "middleRight":
-                        imagenVistaPrevia = writeImage(image, texto, 200, 500);
-                        posSeleccionada = true;
-                        break;
-                    case "bottomLeft":
-                        imagenVistaPrevia = writeImage(image, texto, 300, 100);
-                        posSeleccionada = true;
-                        break;
-                    case "bottomCenter":
-                        imagenVistaPrevia = writeImage(image, texto, 300, 300);
-                        posSeleccionada = true;
-                        break;
-                    case "bottomRight":
-                        imagenVistaPrevia = writeImage(image, texto, 300, 500);
-                        posSeleccionada = true;
-                        break;
-                    default:
-                        break;
-                }
-                
-                if (posSeleccionada) {
-                    JLabel imageLabel = new JLabel();
-                    imageLabel.setIcon(new ImageIcon(imagenVistaPrevia));
-                    panelVistaPrevia.add(imageLabel);
-                    vistaPrevia.setLocationRelativeTo(null);
-                    vistaPrevia.setVisible(true);
-                    ImageIO.write(image, "png", new File(lblDepartamento.getText()+"_"+con.maxIdNot()+"_"+lblFecha.getText()));
-                }
+                panelVistaPrevia.removeAll();
+                BufferedImage brVistaPrevia = ImageIO.read(new File("vistaprevia"));
+                JLabel labelImg = new JLabel(new ImageIcon(brVistaPrevia));
+                //Crea un panel donde poner la imagen
+                JPanel panelImagen = new JPanel();
+                //Se establece posición y tamaño
+                panelImagen.setBounds(0, 0, 600, 400);
+                panelImagen.add(labelImg);//Se añade la imagen al Panel
+                panelVistaPrevia.add(panelImagen);//Se añade el Panel de la Imagen
+                vistaPrevia.setLocationRelativeTo(null);
+                vistaPrevia.setVisible(true);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1461,6 +1644,269 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable1MouseReleased
 
+    private void topLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topLeftActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 100, 100);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_topLeftActionPerformed
+
+    private void topCenterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topCenterActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 600, 100);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_topCenterActionPerformed
+
+    private void topRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topRightActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 900, 100);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_topRightActionPerformed
+
+    private void middleLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_middleLeftActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 100, 500);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_middleLeftActionPerformed
+
+    private void middleCenterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_middleCenterActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 600, 500);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_middleCenterActionPerformed
+
+    private void middleRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_middleRightActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 900, 500);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_middleRightActionPerformed
+
+    private void bottomLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomLeftActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 100, 800);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_bottomLeftActionPerformed
+
+    private void bottomCenterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomCenterActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 600, 800);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_bottomCenterActionPerformed
+
+    private void bottomRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottomRightActionPerformed
+        if (jTextArea1.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe escribir algo");
+            buttonGroup1.clearSelection();
+        } else if (imagen_seleccionada==null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar una imagen");
+            buttonGroup1.clearSelection();
+        } else {
+            try {
+                System.out.println("Posición: "+evt.getActionCommand());
+                String texto = jTextArea1.getText();
+                image = ImageIO.read(imagen_seleccionada);// Se toma la imagen seleccionada
+                System.out.println("Imagen cargada");
+                BufferedImage imagenVistaPrevia = null;
+                imagenVistaPrevia = writeImage(image, texto, 900, 800);
+                ImageIO.write(imagenVistaPrevia, "png", new File("vistaprevia"));
+                System.out.println("Vista previa creada");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_bottomRightActionPerformed
+
+    private void tablaTodasNoticiasMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTodasNoticiasMouseReleased
+        if (tablaTodasNoticias.getSelectedRow()>-1) {
+            btnEliminarNoticia.setEnabled(true);
+            btnEditarNoticia.setEnabled(true);
+        }
+    }//GEN-LAST:event_tablaTodasNoticiasMouseReleased
+
+    private void btnEditarNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarNoticiaActionPerformed
+        int idNot = (int) tablaTodasNoticias.getValueAt(tablaTodasNoticias.getSelectedRow(), 0);
+        System.out.println("Id seleccionado: "+idNot);
+        Noticia noticia = con.getNoticia(idNot);
+        txtIdNot.setText(Integer.toString(noticia.getIdNoticia()));
+        txtDepartamento.setText(noticia.getDepartamento());
+        txtFecha.setText(noticia.getFecha());
+        txtRutaImagen.setText(noticia.getRuta());
+        txtDiasVigencia.setText(Integer.toString(noticia.getDiasVigencia()));
+        
+        if (noticia.getVigente()==0)
+            chkVigente.setSelected(false);
+        else
+            chkVigente.setSelected(true);
+        
+        if (noticia.getPublica()==0)
+            chkPublica.setSelected(false);
+        else
+            chkPublica.setSelected(true);
+        
+        byte[] imagen = noticia.getImagen();
+        
+        try {
+            panelVistaPrevia.removeAll();
+            BufferedImage brImagen = ImageIO.read(new ByteArrayInputStream(imagen));
+            JLabel labelImg = new JLabel(new ImageIcon(brImagen));
+            //Crea un panel donde poner la imagen
+            JPanel panelImagen = new JPanel();
+            //Se establece posición y tamaño
+            panelImagen.setBounds(0, 0, 600, 400);
+            panelImagen.add(labelImg);//Se añade la imagen al Panel
+            panelVistaPrevia.add(panelImagen);//Se añade el Panel de la Imagen
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        editarNoticia.setLocationRelativeTo(null);
+        editarNoticia.setVisible(true);
+    }//GEN-LAST:event_btnEditarNoticiaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        vistaPrevia.setLocationRelativeTo(null);
+        vistaPrevia.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        editarNoticia.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1511,6 +1957,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelarNuevaNoticia;
     private javax.swing.JButton btnCancelarNuevoUsuario;
     private javax.swing.JButton btnConectarBD;
+    private javax.swing.JButton btnEditarNoticia;
+    private javax.swing.JButton btnEliminarNoticia;
     private javax.swing.JButton btnEliminarUsuario;
     private javax.swing.JButton btnImagen;
     private javax.swing.JButton btnLogin;
@@ -1522,7 +1970,13 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnVerNoticia;
     private javax.swing.JButton btnVistaPrevia;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JCheckBox chkPublica;
+    private javax.swing.JCheckBox chkVigente;
+    private javax.swing.JDialog editarNoticia;
     private javax.swing.JDialog editarUsuario;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1533,11 +1987,16 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
@@ -1574,11 +2033,16 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JRadioButton topCenter;
     private javax.swing.JRadioButton topLeft;
     private javax.swing.JRadioButton topRight;
+    private javax.swing.JLabel txtDepartamento;
+    private javax.swing.JLabel txtDiasVigencia;
     private javax.swing.JTextField txtEditarClave;
+    private javax.swing.JLabel txtFecha;
     private javax.swing.JTextField txtIP;
+    private javax.swing.JLabel txtIdNot;
     private javax.swing.JTextField txtNuevaClave;
     private javax.swing.JTextField txtNuevoUsuario;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JLabel txtRutaImagen;
     private javax.swing.JTextField txtUser;
     private javax.swing.JTextField txtVigencia;
     private javax.swing.JDialog vistaPrevia;

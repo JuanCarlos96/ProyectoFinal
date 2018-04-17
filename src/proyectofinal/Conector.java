@@ -168,10 +168,29 @@ public class Conector {
         }
     }
     
-    public ArrayList<Noticia> listaNoticiasUser() {
+    public Noticia getNoticia(int idNot) {
+        Noticia noticia = null;
+        
+        try {
+            sql = "SELECT * FROM Noticia WHERE IdNot="+idNot;
+            stmnt = conexion.createStatement();
+            ResultSet rs = stmnt.executeQuery(sql);
+            
+            while (rs.next()) {
+                noticia = new Noticia(rs.getInt("IdNot"), rs.getInt("DiasVigencia"), rs.getInt("Vigente"), rs.getInt("Publica"), rs.getString("Departamento"), rs.getString("Fecha"), rs.getString("Ruta"), rs.getBytes("Imagen"));
+            }
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return noticia;
+    }
+    
+    public ArrayList<Noticia> listaNoticiasUser(String departamento) {
         ArrayList<Noticia> noticias = new ArrayList();
         try {
-            sql = "SELECT IdNot,Fecha,DiasVigencia FROM Noticia";
+            sql = "SELECT IdNot,Fecha,DiasVigencia FROM Noticia WHERE Departamento='"+departamento+"'";
             stmnt = conexion.createStatement();
             ResultSet rs = stmnt.executeQuery(sql);
             

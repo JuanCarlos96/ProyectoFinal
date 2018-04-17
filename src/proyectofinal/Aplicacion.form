@@ -256,12 +256,25 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="btnEditarNoticia" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnEliminarNoticia" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <Component id="jScrollPane2" alignment="0" pref="658" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane2" alignment="0" pref="386" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jScrollPane2" pref="350" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="btnEliminarNoticia" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnEditarNoticia" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                         </DimensionLayout>
                       </Layout>
@@ -323,9 +336,27 @@
                                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaTodasNoticiasMouseReleased"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
+                        <Component class="javax.swing.JButton" name="btnEliminarNoticia">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Eliminar"/>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnEditarNoticia">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Ver"/>
+                            <Property name="enabled" type="boolean" value="false"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarNoticiaActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -1009,6 +1040,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="topLeft"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topLeftActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="topRight">
               <Properties>
@@ -1017,6 +1051,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="topRight"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topRightActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="bottomLeft">
               <Properties>
@@ -1025,6 +1062,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="bottomLeft"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bottomLeftActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="bottomRight">
               <Properties>
@@ -1033,6 +1073,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="bottomRight"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bottomRightActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="middleLeft">
               <Properties>
@@ -1041,6 +1084,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="middleLeft"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="middleLeftActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="middleRight">
               <Properties>
@@ -1049,6 +1095,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="middleRight"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="middleRightActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="bottomCenter">
               <Properties>
@@ -1057,6 +1106,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="bottomCenter"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bottomCenterActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="topCenter">
               <Properties>
@@ -1065,6 +1117,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="topCenter"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topCenterActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="middleCenter">
               <Properties>
@@ -1073,6 +1128,9 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="middleCenter"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="middleCenterActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1147,6 +1205,189 @@
     </Container>
     <Component class="javax.swing.JFileChooser" name="jFileChooser1">
     </Component>
+    <Container class="javax.swing.JDialog" name="editarNoticia">
+      <Properties>
+        <Property name="modal" type="boolean" value="true"/>
+        <Property name="resizable" type="boolean" value="false"/>
+        <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[519, 276]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="txtFecha" pref="120" max="32767" attributes="0"/>
+                          <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtIdNot" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtDiasVigencia" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="chkVigente" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="chkPublica" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="txtDepartamento" min="-2" pref="130" max="-2" attributes="0"/>
+                                              <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="192" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="txtRutaImagen" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtIdNot" alignment="1" min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="txtDepartamento" min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="txtFecha" min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="txtRutaImagen" min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtDiasVigencia" min="-2" pref="18" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="chkVigente" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="chkPublica" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="39" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel7">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Id Noticia"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="txtIdNot">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel18">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Departamento"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="txtDepartamento">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel19">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fecha"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="txtFecha">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel20">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ruta imagen"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="txtRutaImagen">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel21">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="D&#xed;as de vigencia"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="txtDiasVigencia">
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkVigente">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Vigente"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkPublica">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="P&#xfa;blica"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ver imagen"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Aceptar"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

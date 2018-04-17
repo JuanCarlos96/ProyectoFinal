@@ -14,6 +14,9 @@ public class Noticia {
     private String departamento, fecha, ruta;
     private byte[] imagen;
 
+    /**
+     * Contructor con todos los campos para realizar la inserción en la base de datos
+     */
     public Noticia(int idNoticia, int diasVigencia, int vigente, int publica, String departamento, String fecha, String ruta, byte[] imagen) {
         this.idNoticia = idNoticia;
         this.diasVigencia = diasVigencia;
@@ -25,12 +28,18 @@ public class Noticia {
         this.imagen = imagen;
     }
 
+    /**
+     * Contructor para listar las noticias en el perfil del usuario
+     */
     public Noticia(int idNoticia, String fecha, int diasVigencia) {
         this.idNoticia = idNoticia;
         this.fecha = fecha;
         this.diasVigencia = diasVigencia;
     }
 
+    /**
+     * Constructor para listar las noticias en el perfil del administrador
+     */
     public Noticia(int idNoticia, String departamento, String fecha, int diasVigencia, int vigente, int publica) {
         this.idNoticia = idNoticia;
         this.departamento = departamento;
