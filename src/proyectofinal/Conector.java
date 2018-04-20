@@ -168,6 +168,32 @@ public class Conector {
         }
     }
     
+    public void modNoticia(Noticia n) {
+        try {
+            sql = "UPDATE Noticia SET Vigente=?, Publica=? WHERE IdNot=?";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setInt(1, n.getVigente());
+            pstmnt.setInt(2, n.getPublica());
+            pstmnt.setInt(3, n.getIdNoticia());
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error modificando la noticia");
+            e.printStackTrace();
+        }
+    }
+    
+    public void delNoticia(int idNot) {
+        try {
+            sql = "DELETE FROM Noticia WHERE IdNot=?";
+            pstmnt = conexion.prepareStatement(sql);
+            pstmnt.setInt(1, idNot);
+            pstmnt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error eliminando la noticia");
+            e.printStackTrace();
+        }
+    }
+    
     public Noticia getNoticia(int idNot) {
         Noticia noticia = null;
         

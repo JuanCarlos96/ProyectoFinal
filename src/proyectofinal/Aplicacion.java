@@ -5,6 +5,7 @@
  */
 package proyectofinal;
 
+import com.mysql.jdbc.Connection;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -135,6 +136,9 @@ public class Aplicacion extends javax.swing.JFrame {
         for (Departamento d:usuarios) {
             modeloUsuarios.addRow(new Object[] {d.getUsuario(), d.getClave()});
         }
+        
+        btnModUsuario.setEnabled(false);
+        btnEliminarUsuario.setEnabled(false);
     }
     
     private void listarNoticiasAdmin() {
@@ -150,6 +154,9 @@ public class Aplicacion extends javax.swing.JFrame {
             String publica = n.getPublica()==0? "No":"Sí";
             modeloTodasNoticias.addRow(new Object[] {n.getIdNoticia(), n.getDepartamento(), n.getFecha(), n.getDiasVigencia(), vigente, publica});
         }
+        
+        btnEditarNoticia.setEnabled(false);
+        btnEliminarNoticia.setEnabled(false);
     }
     
     private void listarNoticiasUser() {
@@ -223,6 +230,7 @@ public class Aplicacion extends javax.swing.JFrame {
         btnVerNoticia = new javax.swing.JButton();
         adminMenuBar = new javax.swing.JMenuBar();
         archivoMenu = new javax.swing.JMenu();
+        logout = new javax.swing.JMenuItem();
         salirMenuItem = new javax.swing.JMenuItem();
         peticionIP = new javax.swing.JDialog();
         jLabel3 = new javax.swing.JLabel();
@@ -458,6 +466,11 @@ public class Aplicacion extends javax.swing.JFrame {
 
         btnEliminarNoticia.setText("Eliminar");
         btnEliminarNoticia.setEnabled(false);
+        btnEliminarNoticia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarNoticiaActionPerformed(evt);
+            }
+        });
 
         btnEditarNoticia.setText("Ver");
         btnEditarNoticia.setEnabled(false);
@@ -581,6 +594,11 @@ public class Aplicacion extends javax.swing.JFrame {
 
         btnVerNoticia.setText("Ver");
         btnVerNoticia.setEnabled(false);
+        btnVerNoticia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerNoticiaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
@@ -632,6 +650,14 @@ public class Aplicacion extends javax.swing.JFrame {
         );
 
         archivoMenu.setText("Archivo");
+
+        logout.setText("Cerrar sesión");
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
+        archivoMenu.add(logout);
 
         salirMenuItem.setText("Salir");
         salirMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1122,6 +1148,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addContainerGap())))
         );
 
+        vistaPrevia.setTitle("Vista previa");
         vistaPrevia.setModal(true);
         vistaPrevia.setResizable(false);
         vistaPrevia.setSize(new java.awt.Dimension(600, 400));
@@ -1148,6 +1175,7 @@ public class Aplicacion extends javax.swing.JFrame {
             .addComponent(panelVistaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        editarNoticia.setTitle("Ver noticia");
         editarNoticia.setModal(true);
         editarNoticia.setResizable(false);
         editarNoticia.setSize(new java.awt.Dimension(519, 276));
@@ -1181,6 +1209,11 @@ public class Aplicacion extends javax.swing.JFrame {
         });
 
         jButton3.setText("Aceptar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout editarNoticiaLayout = new javax.swing.GroupLayout(editarNoticia.getContentPane());
         editarNoticia.getContentPane().setLayout(editarNoticiaLayout);
@@ -1402,6 +1435,8 @@ public class Aplicacion extends javax.swing.JFrame {
                 listarNoticiasAdmin();
                 panelAdmin.setVisible(true);
                 panelUsuario.setVisible(false);
+                panelUsuarios.setVisible(true);
+                panelNoticias.setVisible(false);
                 mainAplicacion.setLocationRelativeTo(null);
                 mainAplicacion.pack();
                 mainAplicacion.setTitle("Administrador");
@@ -1894,6 +1929,10 @@ public class Aplicacion extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         
+        jButton3.setVisible(true);
+        jButton2.setText("Cancelar");
+        chkVigente.setEnabled(true);
+        chkPublica.setEnabled(true);
         editarNoticia.setLocationRelativeTo(null);
         editarNoticia.setVisible(true);
     }//GEN-LAST:event_btnEditarNoticiaActionPerformed
@@ -1906,6 +1945,82 @@ public class Aplicacion extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         editarNoticia.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+        Connection c = con.getConexion();
+        if (c!=null) {
+            mainAplicacion.setVisible(false);
+            con.cerrar();
+            txtUser.setText("");
+            txtPassword.setText("");
+            txtUser.requestFocus();
+            this.setVisible(true);
+        }
+    }//GEN-LAST:event_logoutActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int idNot = Integer.parseInt(txtIdNot.getText());
+        int vigente = chkVigente.isSelected()? 1:0;
+        int publica = chkPublica.isSelected()? 1:0;
+        
+        con.modNoticia(new Noticia(idNot, vigente, publica));
+        JOptionPane.showMessageDialog(null, "Noticia modificada correctamente");
+        listarNoticiasAdmin();
+        btnEditarNoticia.setEnabled(false);
+        btnEliminarNoticia.setEnabled(false);
+        editarNoticia.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnVerNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerNoticiaActionPerformed
+        int idNot = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
+        System.out.println("Id seleccionado: "+idNot);
+        Noticia noticia = con.getNoticia(idNot);
+        txtIdNot.setText(Integer.toString(noticia.getIdNoticia()));
+        txtDepartamento.setText(noticia.getDepartamento());
+        txtFecha.setText(noticia.getFecha());
+        txtRutaImagen.setText(noticia.getRuta());
+        txtDiasVigencia.setText(Integer.toString(noticia.getDiasVigencia()));
+        
+        if (noticia.getVigente()==0)
+            chkVigente.setSelected(false);
+        else
+            chkVigente.setSelected(true);
+        
+        if (noticia.getPublica()==0)
+            chkPublica.setSelected(false);
+        else
+            chkPublica.setSelected(true);
+        
+        byte[] imagen = noticia.getImagen();
+        
+        try {
+            panelVistaPrevia.removeAll();
+            BufferedImage brImagen = ImageIO.read(new ByteArrayInputStream(imagen));
+            JLabel labelImg = new JLabel(new ImageIcon(brImagen));
+            //Crea un panel donde poner la imagen
+            JPanel panelImagen = new JPanel();
+            //Se establece posición y tamaño
+            panelImagen.setBounds(0, 0, 600, 400);
+            panelImagen.add(labelImg);//Se añade la imagen al Panel
+            panelVistaPrevia.add(panelImagen);//Se añade el Panel de la Imagen
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        jButton3.setVisible(false);
+        jButton2.setText("Aceptar");
+        chkVigente.setEnabled(false);
+        chkPublica.setEnabled(false);
+        editarNoticia.setLocationRelativeTo(null);
+        editarNoticia.setVisible(true);
+    }//GEN-LAST:event_btnVerNoticiaActionPerformed
+
+    private void btnEliminarNoticiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarNoticiaActionPerformed
+        int idNot = (int) tablaTodasNoticias.getValueAt(tablaTodasNoticias.getSelectedRow(), 0);
+        con.delNoticia(idNot);
+        JOptionPane.showMessageDialog(null, "Noticia eliminada correctamente");
+        listarNoticiasAdmin();
+    }//GEN-LAST:event_btnEliminarNoticiaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2015,6 +2130,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblFortaleza;
     private javax.swing.JLabel lblFortaleza2;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JMenuItem logout;
     private javax.swing.JFrame mainAplicacion;
     private javax.swing.JRadioButton middleCenter;
     private javax.swing.JRadioButton middleLeft;

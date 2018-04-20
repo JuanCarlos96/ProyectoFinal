@@ -48,6 +48,15 @@ public class Noticia {
         this.vigente = vigente;
         this.publica = publica;
     }
+    
+    /**
+     * Contructor para modificar las noticias desde el perfil del administrador
+     */
+    public Noticia(int idNot, int vigente, int publica) {
+        this.idNoticia = idNot;
+        this.vigente = vigente;
+        this.publica = publica;
+    }
 
     public int getIdNoticia() {
         return idNoticia;
